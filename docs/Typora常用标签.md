@@ -71,4 +71,4 @@ command+T
 $$回车
 或者行内f(x)=
 
- ![Typora常用操作](/home/jing/code/github-repository/NoteBooks/docs/pics/Typora常用操作.png)
+ ![Typora常用操作](https://github.com/Gugibv/NoteBooks/blob/master/docs/pics/Typora%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.png)
