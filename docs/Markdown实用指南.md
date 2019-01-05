@@ -95,3 +95,5 @@ title在链接地址后使用单引号或双引号括起来,可以省略
 链接标记不区分大小写
 
 链接内容可以放在当前文件的任意文字
+
+<div align="center"> <img src="pics/Screenshot-20190105230130-677x164.png" width="800"/> </div><br>
