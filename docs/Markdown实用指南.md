@@ -248,15 +248,19 @@ ctrl + shift + k
 
 序列图,也称为循序图,是一种UML (统一建模语言)行为图,它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作.
 
- ```sequence
-Title: A、B、C、D 关系图
-Note left of B: A我们是好兄弟
-Note left of C: D是一个好同志
-A->B: 好兄弟
-B-->C: 好基友
-C->>D: 好同志
-D-->>A: 好朋友
- ```
+```
+​```flow
+st=>start: Start:>https://www.markdown-syntax.com
+io=>inputoutput: verification
+op=>operation: Your Operation
+cond=>condition: Yes or No?
+sub=>subroutine: Your Subroutine
+e=>end
+st->io->op->cond
+cond(yes)->e
+cond(no)->sub->io
+` ``
+```
 
  
 
