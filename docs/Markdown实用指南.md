@@ -246,33 +246,11 @@ ctrl + shift + k
 
 #### 20. 图表
 
-序列图,也称为循序图,是一种UML (统一建模语言)行为图,它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作.
+序列图,也称为循序图,是一种UML (统一建模语言)行为图,它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作.Typora中提供的序列图 语法标记功能是基于开源项目([js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))开发的
 
-```
-​```flow
-st=>start: Start:>https://www.markdown-syntax.com
-io=>inputoutput: verification
-op=>operation: Your Operation
-cond=>condition: Yes or No?
-sub=>subroutine: Your Subroutine
-e=>end
-st->io->op->cond
-cond(yes)->e
-cond(no)->sub->io
-` ``
-```
+流程图,以图像的方式表示过程,算法和流程.语法标记功能是基于开源项目([flowchart.js](http://flowchart.js.org/))开发的
 
- 
-
-
-
-
-
-
-
-
-
-
+Mermaid 支持文本方式生成图表,包括序列图,流程图,甘特图.[语法参考](https://mermaidjs.github.io/)
 
 
 
