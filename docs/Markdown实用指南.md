@@ -1,3 +1,7 @@
+---
+
+---
+
 ## Markdown实用指南
 
 
@@ -124,9 +128,164 @@ title在链接地址后使用单引号或双引号括起来,可以省略
 
 ### 二、实时预览编辑器Typora
 
-安装Typora以后,安装Pandoc.如果不安装Pandoc,Typora只支持到出HTML和PDF格式的文件.
+#### 1. 段落与换行
 
-如果安装了Pandoc,Typora支持的文件格式更多.
+关于Typora的换行:只需要按一次回车就行,源码自动帮我们添加一空行.
 
-测试按时
+如果需要首行缩进:可以设置Edit->Whitespace and Line Breaks->Indent first line of paragraphs
 
+#### 2. 标题
+
+ctrl+1 对应标题1
+
+ctrl + 增加标题级别
+
+ctrl - 减少标题级别
+
+#### 3. 设置普通文本
+
+ctrl+0
+
+#### 4. 列表
+
+有序列表 ctrl + shift + [
+
+无序列表 ctrl + shift + ]
+
+#### 5. 列表缩排
+
+增加缩进 ctrl + [
+
+减少缩进 ctrl + ]
+
+#### 6. 引用
+
+如果想添加引用,或将光标所在行设置为引用  ctrl + shift + q
+
+#### 7. 图片
+
+添加图片 ctrl + shift + I
+
+#### 8. 管理本地图片
+
+默认情况下,插入的本地图片链接是原地址,图片可能分散在电脑各处,不便于管理,为了方便管理,可以将插入的图片自动复制到制定文件夹下面.
+
+操作:Edit -> Image Tools -> where inset local images ->选择文件夹
+
+#### 9. 设置图片大小
+
+```
+<!--通过属性设置图片的宽和高-->
+<img src="./pics/小兔子.jpg" width="200px" height="200px">
+
+<!--通过样式设置图片的宽和高-->
+<img src="./pics/小兔子.jpg"  style="width:200px; height:200px"   >
+
+<!--通过样式设置图片的缩放比例-->
+<img src="./pics/小兔子.jpg"  style="zoom:50%">
+```
+
+#### 10. 文字链接
+
+ctrl + k 
+
+####  11. 链接引用
+
+Paragraph -> Link Rreference
+
+#### 12. 表格
+
+ctrl + T
+
+#### 13. 下划线
+
+ctrl + u
+
+#### 14. 删除线
+
+alt + shit + 5
+
+####  15. 代码快
+
+ctrl + shift + k
+
+#### 16. 数字区块
+
+两个英文$回车或者  ctrl + shift + M
+
+[LaTex公式对照表](https://en.wikibooks.org/wiki/LaTeX/Mathematics)
+
+#### 17. 生成目录
+
+```
+[TOC]
+```
+
+#### 18. 注脚
+
+```
+我们可以这样创建一个[^注脚]
+[^注脚]:这段文字是对注脚的描述
+```
+
+快捷操作: 先设置注脚
+
+```
+我们可以这样创建一个[^注脚]
+```
+
+然后Paragraph -> Footnotes ,最后输入注脚和注脚内容的描述
+
+#### 19. 表情
+
+```
+:表情代码
+```
+
+[表情符号参考](https://www.webfx.com/tools/emoji-cheat-sheet/)
+
+#### 20. 图表
+
+序列图,也称为循序图,是一种UML (统一建模语言)行为图,它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作.
+
+ ```sequence
+Title: A、B、C、D 关系图
+Note left of B: A我们是好兄弟
+Note left of C: D是一个好同志
+A->B: 好兄弟
+B-->C: 好基友
+C->>D: 好同志
+D-->>A: 好朋友
+ ```
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​						s
