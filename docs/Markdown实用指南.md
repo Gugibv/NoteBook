@@ -127,5 +127,6 @@ title在链接地址后使用单引号或双引号括起来,可以省略
 安装Typora以后,安装Pandoc.如果不安装Pandoc,Typora只支持到出HTML和PDF格式的文件.
 
 如果安装了Pandoc,Typora支持的文件格式更多.
-测试
+
+测试按时
 
