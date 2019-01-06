@@ -1,5 +1,3 @@
-## 一. 基本命令
-
 ### 1.ls 列出目录内容
 
 - -l 详细内容(权限,inode,属主,属组,大小,修改时间)
@@ -167,3 +165,44 @@
 
 - ls a/ > file 输出文件夹a的内容到file
 - ls a/ >> file 追加文件a的内容到file
+
+### 22.进程管理
+
+- 进程就是运行中的程序文件
+  - pid :进程ID
+  - TTY: 进行进程的终端设备
+  - STAT:进程状态(sleep,running)
+  - TIME:该进程占用的CPU时间
+  - COMMAND:命令名称
+- ps
+  - -x :当前用户启动的所有进程
+  - -ax:所有用户启动的进程  ps axu 进程显示用户  ps axuw 显示进程的完整路径
+  - -ef:打印出全部进程的, 进程名称以及pid
+  - ps -ef | grep mysqld :过滤出指定的进程名称
+  - -w:显示进程文件完整路径
+  - ps -L PID 查看进程的线程
+  - pstree 以树状图的方式展现进程之间的派生关系
+- 结束进程
+  - kill pid 
+  - kill -stop pid 
+  - kill -KILL pid 或者kill -9 pid 强制结束进程
+
+### 23.归档打包和压缩
+
+- gzip (GNU Zip)
+
+  - linux标准压缩程序 gzip file
+  - 解压 gunzip file.gz
+  - Gzip不做多文件或目录的归档打包
+
+- tar打包归档(Archive)
+
+
+
+
+
+
+
+
+
+

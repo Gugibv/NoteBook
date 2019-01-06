@@ -13,4 +13,4 @@
 
 #### 排版
 
-笔记内容按照 [中文文案排版指南](https://mazhuang.org/wiki/chinese-copywriting-guidelines/)进行排版,以保证内容的可阅读性.文本编辑按照[markdown实用指南](https://github.com/Gugibv/NoteBooks/blob/master/docs/Markdown%E5%AE%9E%E7%94%A8%E6%8C%87%E5%8D%97.md)操作,其中的目录是通过[gh-md-toc](https://github.com/ekalinin/github-markdown-toc)生成.
+笔记内容按照 [中文文案排版指南](https://mazhuang.org/wiki/chinese-copywriting-guidelines/)进行排版,以保证内容的可阅读性.文本编辑按照[markdown实用指南](https://github.com/Gugibv/NoteBooks/blob/master/docs/Markdown%E5%AE%9E%E7%94%A8%E6%8C%87%E5%8D%97.md)操作,文件目录通过[gh-md-toc](https://github.com/ekalinin/github-markdown-toc)生成.
