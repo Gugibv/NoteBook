@@ -34,6 +34,9 @@ OSI, the theoretically better abstraction of the network model, failed to be wid
 
 OSI，这种在理论上看似更优的网络模型的抽象方式，由于过于复杂而没有被工业界大规模采用。
 
+本文选自：
+https://www.kernel.org/doc/html/latest/userspace-api/unshare.html
+
 ```
 legacy /ˈlɛɡəsi/ 遗产
 kernel /ˈkɜ:rnl/ 核，核心
