@@ -1,3 +1,4 @@
+```
 Reflection is commonly used by programs which require the ability to examine or modify the runtime behavior of applications running in the Java virtual machine.
 对于运行在Java虚拟机上的程序来说，如果需要检查或修改运行时行为，反射是一种很常见的技术。
 
@@ -18,6 +19,7 @@ Because reflection involves types that are dynamically resolved, certain Java vi
 
 Consequently, reflective operations have slower performance than their non-reflective counterparts, and should be avoided in sections of code which are called frequently in performance-sensitive applications.
 因此，在对性能敏感的程序里，如果一段代码被反复调用，那在这段代码中要尽量避免使用反射。
+```
 
 本文选自：
 https://docs.oracle.com/javase/tutorial/reflect/index.html
