@@ -7,7 +7,7 @@
 
 ### 多线程
 
-[java多线程](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md) 参考<java多线程编程核心技术>
+[java多线程](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md)   参考<<Java多线程编程核心技术>>
 
 ### 后记
 
@@ -21,5 +21,5 @@
 
 笔记内容按照 [中文文案排版指南](https://mazhuang.org/wiki/chinese-copywriting-guidelines/) 进行排版,以保证内容的可阅读性.github不支持 [toc] 标签, 文件目录通过 [gh-md-toc](https://github.com/ekalinin/github-markdown-toc) 生成.
 
-
+笔记使用 <div align="center"> <img src="" width="800"/> </div> 的方式来引入图片.
 
