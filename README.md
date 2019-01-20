@@ -21,5 +21,11 @@
 
 笔记内容按照 [中文文案排版指南](https://mazhuang.org/wiki/chinese-copywriting-guidelines/) 进行排版,以保证内容的可阅读性.github不支持 [toc] 标签, 文件目录通过 [gh-md-toc](https://github.com/ekalinin/github-markdown-toc) 生成.
 
-笔记使用 <div align="center"> <img src="" width="800"/> </div> 的方式来引入图片.
+笔记使用下面的方式来引入图片:
+
+```
+<div align="center"> <img src="" width="800"/> </div>
+```
+
+
 
