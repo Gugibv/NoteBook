@@ -37,9 +37,9 @@
    * [20. 图表](#20-图表)
 * [三、排版](#三排版)
 
-### 一、了解Markdown
+### 一、了解 Markdown
 
-**Markdown**是一种轻量级标记语言，创始人为約翰·格魯伯（英语：John Gruber）。 它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML（或者HTML）文档”。
+**Markdown**是一种轻量级标记语言，创始人为約翰·格魯伯（英语：John Gruber）。 它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档”。
 
 不同的段落之间使用空格来标记
 
@@ -49,7 +49,7 @@
 # + 空格 +标题内容
 ```
 
-#的个数表明了标题的等级
+\#的个数表明了标题的等级
 
 #### 2. 列表
 
@@ -147,7 +147,7 @@ title在链接地址后使用单引号或双引号括起来,可以省略
 
 #### 9. 锚点
 
-锚点,也称为书签,用来标记文档中的特定位置,使用锚点可以跳转到当前文档或其他文档中指定的标记位置.github,gitbook中的目录都是通过锚点来实现跳转的.
+锚点,也称为书签,用来标记文档中的特定位置,使用锚点可以跳转到当前文档或其他文档中指定的标记位置.github,gitbook 中的目录都是通过锚点来实现跳转的.
 
 ```
 [锚点描述](#锚点名)
@@ -157,13 +157,13 @@ title在链接地址后使用单引号或双引号括起来,可以省略
 
 
 
-### 二、实时预览编辑器Typora
+### 二、实时预览编辑器 Typora
 
 #### 1. 段落与换行
 
-关于Typora的换行:只需要按一次回车就行,源码自动帮我们添加一空行.
+关于 Typora 的换行:只需要按一次回车就行,源码自动帮我们添加一空行.
 
-如果需要首行缩进:可以设置Edit->Whitespace and Line Breaks->Indent first line of paragraphs
+如果需要首行缩进:可以设置 Edit->Whitespace and Line Breaks->Indent first line of paragraphs
 
 #### 2. 标题
 
@@ -277,11 +277,11 @@ ctrl + shift + k
 
 #### 20. 图表
 
-序列图,也称为循序图,是一种UML (统一建模语言)行为图,它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作.Typora中提供的序列图 语法标记功能是基于开源项目([js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/))开发的
+序列图,也称为循序图,是一种 UML (统一建模语言) 行为图,它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作.Typora 中提供的序列图 语法标记功能是基于开源项目 ([js-sequence-diagrams](https://bramp.github.io/js-sequence-diagrams/)) 开发的
 
-流程图,以图像的方式表示过程,算法和流程.语法标记功能是基于开源项目([flowchart.js](http://flowchart.js.org/))开发的
+流程图,以图像的方式表示过程,算法和流程.语法标记功能是基于开源项目 ([flowchart.js](http://flowchart.js.org/)) 开发的
 
-Mermaid 支持文本方式生成图表,包括序列图,流程图,甘特图.[语法参考](https://mermaidjs.github.io/)
+Mermaid 支持文本方式生成图表,包括序列图,流程图,甘特图.[语法参考 ](https://mermaidjs.github.io/)
 
 ### 三、排版
 
