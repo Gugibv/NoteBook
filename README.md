@@ -9,6 +9,10 @@
 
 [java多线程](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md)   参考 [java多线程编程核心技术](https://book.douban.com/subject/26555197/)
 
+### web开发
+
+ [web开发常用技术](https://github.com/Gugibv/NoteBooks/blob/master/docs/web%E9%AB%98%E7%BA%A7%E5%BC%80%E5%8F%91.md)
+
 ### 后记
 
 #### 关于
