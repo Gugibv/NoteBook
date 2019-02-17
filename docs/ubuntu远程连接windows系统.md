@@ -21,3 +21,5 @@ sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
 <div align="center"> <img src="pics/Remmina连接xp.png" width="850"/> </div><br>
 
 然后点击Save and Connect 即可。
+
+最后另外还有一种方法就是unbutu和windows系统都使用teamviewer个人版。

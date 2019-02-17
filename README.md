@@ -5,6 +5,10 @@
 
 [ubuntu常用命令](https://github.com/Gugibv/NoteBooks/blob/master/docs/ubuntu%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)  一些 linux 的常用命令
 
+[Ubuntu环境下搭建SSR](https://github.com/Gugibv/NoteBooks/blob/master/docs/Ubuntu%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BASSR.md) [参考原文](https://blog.csdn.net/m0_37536414/article/details/84850078)
+
+[ubuntu远程连接windows系统](https://github.com/Gugibv/NoteBooks/blob/master/docs/ubuntu%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5windows%E7%B3%BB%E7%BB%9F.md)
+
 ### 多线程
 
 [java多线程](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md)   参考 [java多线程编程核心技术](https://book.douban.com/subject/26555197/)
