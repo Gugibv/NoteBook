@@ -21,6 +21,12 @@
 
 [常用算法练习题](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95%E7%BB%83%E4%B9%A0%E9%A2%98.md)
 
+#### 英语文档
+
+[Java Reflection](https://github.com/Gugibv/NoteBooks/blob/master/en/Java%20Reflection.md)
+
+[Linux kernel unshare](https://github.com/Gugibv/NoteBooks/blob/master/en/Linux%20kernel%20unshare.md)
+
 ### 后记
 
 #### 关于
