@@ -28,7 +28,7 @@ shouldComponentUpdate, which is triggered before the re-rendering process starts
 
 > 在大多数情况下，这不是一个问题。但如果你注意到程序慢下来了，就可以通过重写shouldComponentUpdate这个生命周期函数来进行加速。shouldComponentUpdate会在每次重新渲染前被执行。
 
-React builds and maintains an internal representation of the rendered UI.
+
 
 Rendered UI	已渲染的用户界面
 
