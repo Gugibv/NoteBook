@@ -27,6 +27,8 @@
 
 [Linux kernel unshare](https://github.com/Gugibv/NoteBooks/blob/master/en/Linux%20kernel%20unshare.md)
 
+[React Virtual DOM](https://github.com/Gugibv/NoteBooks/blob/master/en/React%20Virtual%20DOM.md)
+
 ### 后记
 
 #### 关于
