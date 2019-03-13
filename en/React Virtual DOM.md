@@ -22,7 +22,7 @@ Even though React only updates the changed DOM nodes, re-rendering still takes s
 
 > 即便React只更新有改变的那些DOM节点，重新渲染依旧比较耗时。
 
-in many cases it’s not a problem, but if the slowdown is noticeable, you can speed all of this up by overriding the lifecycle function 
+In many cases it’s not a problem, but if the slowdown is noticeable, you can speed all of this up by overriding the lifecycle function 
 
 shouldComponentUpdate, which is triggered before the re-rendering process starts.
 
@@ -91,3 +91,5 @@ override  /ˌoʊvərˈraɪd/	覆盖，重写
 lifecycle function	生命周期函数
 
 trigger /ˈtrɪɡɚ/	触发
+
+本文选自[Optimizing Performance](https://www.chromium.org/developers/design-documents/inter-process-communication)
