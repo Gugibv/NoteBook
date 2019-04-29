@@ -19,7 +19,7 @@
 
 ### 算法
 
-[常用算法小结](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95%E7%BB%83%E4%B9%A0%E9%A2%98.md)
+[常用算法小结](<https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93.md>)
 
 ### 后记
 
