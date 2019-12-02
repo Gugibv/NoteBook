@@ -1,5 +1,3 @@
-[原文来源](https://blog.csdn.net/m0_37536414/article/details/84850078)
-
 ## 配置SSR客户端
 
 Shadowsocks与ShadowsocksR的区别：
