@@ -22,6 +22,29 @@ linux的目录结构也是有规律的，而且也是按照类别组织的。
 
 超级用户：默认root用户，其UID和GID均为0。root用户是每台操作unix/linux 操作系统中都是唯一且真实存在的，通过它可以登陆系统，可以操作系统中的任何文件和命令，拥有最高的管理权限。在生产环境中，一般会禁止root账号通过ssh远程连接服务器，当然了，也会更改默认的ssh端口，以加强系统安全。
 
+
+
+<div align="center"> <img src="pics/普通用户运行sudo.png" width="500"/> </div><br>
+
+```sql
+visudo 
+98G      ##跳转到98行 添加下面内容：
+cpestst   ALL=(ALL)  /usr/sbin/useradd ,/bin/rm
+## 切换到cpestst用户
+su - cpestst
+sudo useradd mmm  ##输入cpestst用户的密码
+```
+
+ll /etc/sudoers
+
+> -r--r----- 1 root root 2126 2010-03-01 /etc/sudoers
+
+通过sudoers向sudo授权
+
+visudo 相当于 vi /etc/sudoers
+
+### 三、文件权限
+
 chmod 的数字方法说明：
 
 > 可读r      4      （目录）表示具有浏览目录下面文件及目录的权限 即 ls dir
@@ -64,7 +87,7 @@ linux 系统默认权限的方针：允许浏览，查看，但是禁止创建�
 >
 > 6 2 1  —>计算出来的权限  ，由于 umask 的最后一位数字是5， 所以最终权限是6 2 2 。只要有奇数的位置就+1.
 
-### 三、定时任务
+### 四、定时任务
 
 #### 1、crond是什么?
 
@@ -128,7 +151,7 @@ cmd 为要执行的命令或脚本 ，例如/bin/sh  /cpestst/cpestst.sh
 
  
 
-### 四、Linux正则表达式
+### 五、Linux正则表达式
 
 简单的说，正则表达式就是一套处理字符串的规则和方法，以行为单位对字符串进行处理，通过特殊的符号的辅助，我们可以快速的过滤，替换某些特定的字符串。
 
@@ -152,7 +175,7 @@ linux 里正则表达式，主要是awk,sed,grep(egrep)三剑客的正则表达�
 
 例如：grep -i  "^m" cpestst-send-info.log 搜索以m 开头的行
 
-### 五、vi 命令
+### 六、vi 命令
 
 退出保存 :wq
 
