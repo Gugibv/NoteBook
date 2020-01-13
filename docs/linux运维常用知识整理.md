@@ -8,6 +8,20 @@
 
 ll /dev/sd*  查看分区
 
+linux 系统对分区的要求：
+
+常规分区方案：
+
+- /   最少要有 / 分区，50-200G
+
+- swap 1.5b倍 物理内存容量（mem<8G），当内存大于16G，虚拟内存（8~16G）
+
+- /boot 100M  建议设置独立的/boot分区
+
+> linux 引导分区，存放系统引导文件，如linux内核等，所有文件大小一般只有几十M，因此，该分区设置100~200M
+
+- /data/ 剩余硬盘大小，放数据的
+
 linux的目录结构也是有规律的，而且也是按照类别组织的。
 
 >  应用程序 /usr/bin
@@ -27,16 +41,6 @@ linux的目录结构也是有规律的，而且也是按照类别组织的。
 sudo:普通用户可以拥有root 或者其他用户的权限
 
 <div align="center"> <img src="pics/普通用户运行sudo.png" width="500"/> </div><br>
-
-```sql
-visudo   ##编辑sudo配置文件
-98G      ##跳转到98行 添加下面内容：
-cpestst   ALL=(ALL)  /usr/sbin/useradd ,/bin/rm
-## 切换到cpestst用户
-su - cpestst
-sudo useradd mmm  ##输入cpestst用户的密码
-```
-
 ll /etc/sudoers
 
 > -r--r----- 1 root root 2126 2010-03-01 /etc/sudoers
@@ -45,7 +49,29 @@ ll /etc/sudoers
 
 visudo 相当于 vi /etc/sudoers
 
-#### 2.2、用户权限集中管理方案
+#### 2.2、将普通账号加入到 sudo 管理
+
+root 用户下，visudo ,92gg 定位到92行 ，输入yy 复制当前行，输入p ，粘贴
+
+例如，给cpestst 用户授权添加用户的权限，先root用户执行：which useradd 
+
+> /usr/sbin/useradd
+
+```
+root    ALL=(ALL)       ALL
+cpestst ALL=(ALL)       /usr/sbin/useradd,/bin/rm
+```
+
+这样切换到cpestst 用户，执行sudo useradd zj, 也可以添加用户了
+
+把cpestst 有跟root 一样的权限： 
+
+```sql
+root    ALL=(ALL)       ALL
+cpestst ALL=(ALL)       NOPASSWD:ALL
+```
+
+#### 2.3、用户权限集中管理方案
 
 背景：如何解决多个系统管理员都能管理系统而又不让超级权限泛滥的需求呢？
 
