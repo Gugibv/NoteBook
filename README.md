@@ -1,7 +1,7 @@
 # NoteBooks
  Computer Science Learning Notes 
 
-### 操作系统
+### 一、操作系统
 
 [ubuntu常用命令](https://github.com/Gugibv/NoteBooks/blob/master/docs/ubuntu%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)  一些 linux 的常用命令
 
@@ -9,17 +9,21 @@
 
 [ubuntu远程连接windows系统](https://github.com/Gugibv/NoteBooks/blob/master/docs/ubuntu%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5windows%E7%B3%BB%E7%BB%9F.md)
 
-### 多线程
+### 二、多线程
 
 [java多线程](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md)   参考 [java多线程编程核心技术](https://book.douban.com/subject/26555197/)
 
-### web开发
+### 三、web开发
 
  [web开发常用技术](https://github.com/Gugibv/NoteBooks/blob/master/docs/web%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E6%8A%80%E6%9C%AF.md)
 
-### 算法
+#### [tomcat内核设计](https://github.com/Gugibv/NoteBooks/blob/master/docs/tomcat内核设计.md)
 
-### 
+### 四、运维
+
+#### [linux运维常用知识整理](https://github.com/Gugibv/NoteBooks/blob/master/docs/linux运维常用知识整理.md)
+
+
 
 
 
