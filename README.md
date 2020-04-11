@@ -15,9 +15,7 @@
 
 ### 三、web开发
 
- [web开发常用技术](https://github.com/Gugibv/NoteBooks/blob/master/docs/web%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E6%8A%80%E6%9C%AF.md)
-
-#### [tomcat内核设计](https://github.com/Gugibv/NoteBooks/blob/master/docs/tomcat内核设计.md)
+#### 
 
 ### 四、运维
 
