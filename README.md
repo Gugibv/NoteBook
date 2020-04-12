@@ -11,7 +11,7 @@
 
 ### 二、多线程
 
-[java多线程](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md)   参考 [java多线程编程核心技术](https://book.douban.com/subject/26555197/)
+[java多线程基础](https://github.com/Gugibv/NoteBooks/blob/master/docs/%E5%A4%9A%E7%BA%BF%E7%A8%8B.md)   参考 [java多线程编程核心技术](https://book.douban.com/subject/26555197/)
 
 ### 三、web开发
 
