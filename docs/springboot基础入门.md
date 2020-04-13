@@ -567,8 +567,7 @@ public class ValidateTestClass {
     public void validateParams() {
         //调用JSR303验证工具，校验参数
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<ValidateTestClass>> violations = 
-        														validator.validate(this);
+        Set<ConstraintViolation<ValidateTestClass>> violations = validator.validate(this);
         Iterator<ConstraintViolation<ValidateTestClass>> iter = violations.iterator();
         if (iter.hasNext()) {
             String errMessage = iter.next().getMessage();
