@@ -669,7 +669,7 @@ slf4j 为各种日志框架提供了一个统一的界面，使用户可以用�
 | ------------------------------------------------------------ | -------------------- |
 | ~~JCL(Jakarta Commons Logging)~~ SLF4j (Simple Logging Facade for Java) | Log4j Log4j2 Logback |
 
-SpringBoot 默认使用 logback，logback 相当于 log4j 的升级版，做了很多改进，比如更快的运行速度，更充分的测试。
+SpringBoot 默认使用 logback，logback 相当于 log4j 的升级版，做了很多改进，比如更快的运行速度，更充分的测试等。
 
 logback 由三个模块组成
 
@@ -695,11 +695,9 @@ public class HelloWorld {
 }
 ```
 
-在项目中，我们使用Logback，其实只需增加一个配置文件（自定义你的配置）即可
+在项目中，我们使用Logback，其实只需增加一个配置文件（自定义你的配置）即可。
 
 #### 3.1.  配置文件详解
-
-
 
 配置文件精简结构如下所示
 
@@ -723,7 +721,7 @@ public class HelloWorld {
 </configuration>  
 ```
 
-这个文件在springboot中默认叫做 `logback-spring.xml`，我们只要新建一个同名文件放在 `resources` 下面， 配置即可生效。
+这个文件在 springboot 中默认叫做 `logback-spring.xml`，我们只要新建一个同名文件放在 `resources` 下面， 配置即可生效。
 
 - contextName：每个`logger`都关联到`logger`上下文，默认上下文名称为`“default”`。但可以使用`contextName`标签设置成其他名字，用于区分不同应用程序的记录
 
@@ -757,69 +755,381 @@ logging:
   config: classpath:/logback-dev.xml
 ```
 
-在 resources 目录下新建 logback-spring.xml 文件，举例一个简单的需求，如果在项目中我们如果需要指定日志的输出格式以及根据日志级别输出到不同的文件，可以配置如下：
+通过控制台输出的 log
+
+在 resources 目录下新建 logback-spring.xml 文件。举例一个简单的需求，通过控制台输出的 log
 
 ```xml
-<?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <!-- 属性文件:在properties文件中找到对应的配置项 -->
-    <springProperty scope="context" name="logging.path" source="logging.path"/>
-    <contextName>xiaoming</contextName>
-    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- 默认的控制台日志输出，一般生产环境都是后台启动，这个没太大作用 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <!--格式化输出（配色）：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽				度%msg：日志消息，%n是换行符-->
-            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
-            </pattern>
-            <charset>UTF-8</charset>
+            <Pattern>%d{HH:mm:ss.SSS} %-5level %logger{80} - %msg%n</Pattern>
         </encoder>
     </appender>
-
-    <!--根据日志级别分离日志，分别输出到不同的文件-->
-    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>DENY</onMatch>
-            <onMismatch>ACCEPT</onMismatch>
-        </filter>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-        <!--滚动策略-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--按时间保存日志 修改格式可以按小时、按天、月来保存-->
-            <fileNamePattern>${logging.path}/xiaoming.info.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!--保存时长-->
-            <MaxHistory>90</MaxHistory>
-            <!--文件大小-->
-            <totalSizeCap>1GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
-
-    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-        <encoder>
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
-        </encoder>
-        <!--滚动策略-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--路径-->
-            <fileNamePattern>${logging.path}/gugibv.error.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <MaxHistory>90</MaxHistory>
-        </rollingPolicy>
-    </appender>
+    
     <root level="info">
-        <appender-ref ref="consoleLog"/>
-        <appender-ref ref="fileInfoLog"/>
-        <appender-ref ref="fileErrorLog"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
 ```
 
-更详细的使用参考文章：《[看完这个不会配置 logback ，请你吃瓜](https://juejin.im/post/5b51f85c5188251af91a7525)》
+打印日志的 controller 
+
+```java
+@Controller
+@RequestMapping("/hello")
+public class HelloController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
+
+    @Autowired
+    private TestLogService testLogService;
+
+    @GetMapping("/hello")
+    @ResponseBody
+    public String sayHello(){
+        LOGGER.info("GLMAPPER-SERVICE:info");
+        LOGGER.error("GLMAPPER-SERVICE:error");
+        testLogService.printLogToSpecialPackage();
+
+        return "hello";
+    }
+}
+```
+
+验证结果：
+
+> 09:48:17.716 INFO  com.example.demo.controller.HelloController - GLMAPPER-SERVICE:info
+> 09:48:17.716 ERROR com.example.demo.controller.HelloController - GLMAPPER-SERVICE:error
+
+上面的就是通过控制台打印出来的，这个时候因为我们没有指定日志文件的输出，因为不会在工程目录下生产`logs`文件夹。
+
+控制台不打印，直接输出到日志文件，先来看下配置文件：
+
+<div align="center"> <img src="pics/输出到日志配置文件.png" width="800"/> </div>
+参考文章：《[看完这个不会配置 logback ，请你吃瓜！](https://juejin.im/post/5b51f85c5188251af91a7525)》
+
+### 四、web开发
+
+web 开发要解决的问题：
+
+- 导入静态资源
+- 首页
+- jsp,模板引擎Thymeleaf
+- 装配扩展springmvc
+- 增删查改
+- 拦截器
+- 国际化
+
+#### 4.1. 导入静态资源
+
+查看`WebMVCAutoConfiguration`源码如下：
+
+```java
+     @Override
+     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            if (!this.resourceProperties.isAddMappings()) {
+                logger.debug("Default resource handling disabled");
+                return;
+            }
+            Integer cachePeriod = this.resourceProperties.getCachePeriod();
+            if (!registry.hasMappingForPattern("/webjars/**")) {
+                customizeResourceHandlerRegistration(
+                        registry.addResourceHandler("/webjars/**")
+                                .addResourceLocations(
+                                        "classpath:/META-INF/resources/webjars/")
+                        .setCachePeriod(cachePeriod));
+            }
+           
+            // 对静态资源文件映射支持
+            // 第一步拿到 staticPathPattern = "/**"
+            String staticPathPattern = this.mvcProperties.getStaticPathPattern();
+          
+            // 第二步如果资源请求没有对应映射，就添加资源处理器及资源找寻位置并设置缓存
+            if (!registry.hasMappingForPattern(staticPathPattern)) {
+                customizeResourceHandlerRegistration(
+                        registry.addResourceHandler(staticPathPattern)
+                                .addResourceLocations(
+                                        this.resourceProperties.getStaticLocations())
+                        .setCachePeriod(cachePeriod));
+            }
+        }
+```
+
+其中 staticLocations 在 `ResourceProperties`类中，源码如下：
+
+```java
+@ConfigurationProperties(
+    prefix = "spring.resources",
+    ignoreUnknownFields = false
+)
+public class ResourceProperties {
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = new String[]{
+        				"classpath:/META-INF/resources/", 
+                 		"classpath:/resources/", 
+                        "classpath:/static/", 
+                        "classpath:/public/"};
+    private String[] staticLocations;
+ 
+    public ResourceProperties() {
+        this.staticLocations = CLASSPATH_RESOURCE_LOCATIONS;
+        ......
+    }
+
+    public String[] getStaticLocations() {
+        return this.staticLocations;
+    }
+    ......
+}
+```
+
+对于所有访问 /webjars/** 下面的请求，都会去 classpath:/META-INF/resources/webjars/ 找资源。
+
+在项目中以 jar 包的方式引入静态资源，比如引入 jquery，就可以在 pom.xml 文件中，加入如下依赖：
+
+```xml
+    <dependency>
+		<groupId>org.webjars</groupId>
+		<artifactId>jquery</artifactId>
+		<version>3.3.1</version>
+	</dependency>
+```
+
+对于在项目中引入该jquery，可以采用如下方式：
+
+> localhost:8080/webjars/jquery/3.3.1/jquery.js
+
+对于访问当前项目的所有请求  /**，如果没有任何控制器处理，都会去（静态资源的文件夹下）找映射，具体目录如下：
+
+`classpath:/META-INF/resources/`,
+`classpath:/resources/`,
+`classpath:/static/`,
+`classpath:/public/`
+`/`：当前项目的根路径
+例如：访问 http://localhost:8080/abc 请求，没有控制器处理该请求，就会去静态资源文件夹里面找 abc
+
+例如：访问 http://localhost:8080/asserts/img/test.png
+
+目录结构：
+
+```xml
+-src
+	-main
+		-java
+		-resources
+			-static.asserts.img
+				-test.png
+```
+
+这里注意URL上面不要添加静态资源文件夹(路径)的名字，如static、public等等。
+
+#### 4.2. 欢迎页
+
+##### 4.2.1. 使用 index.html 作为首页面
+
+默认访问 resources/static/ 目录下的 index.html 作为首页文件，如果没有，则访问 resources/templates  目录下的 index.html 作为首页文件，需要添加依赖：
+
+```xml
+    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+```
+
+可以在配置文件修改静态资源文件夹
+
+```xml
+spring.resources.static-locations=classpath:xxxx
+```
+
+##### 4.2.2. 使用非index.html作为首页
+
+静态页面的 return 默认是跳转到 /static/ 目录下，当在 pom.xml 中引入了 thymeleaf 组件，动态跳转会覆盖默认的静态跳转，默认就会跳转到/templates/下，注意看两者 return 代码也有区别，动态没有 html 后缀。
+
+**静态首页**
+
+```java
+@Controller
+public class HelloController {
+    @GetMapping("/")
+    public String hello(){
+        return "forward:login.html";
+    }
+}
+```
+
+ 或者通过自定义一个 **MVC** 配置，并重写 **addViewControllers** 方法进行转发：
+
+```java
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:login.html");
+    }
+}
+```
+
+**动态首页**
+
+```java
+@Controller
+public class HelloController {
+     @GetMapping("/")
+     public String hello(){
+         return "login";
+     }
+}
+```
+
+另一种方式是通过自定义一个 MVC 配置，并重写 addViewControllers 方法进行映射关系配置即可。
+
+```java
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("login");
+    }
+}
+```
+
+官方参考文档：[29. Developing Web Applications](https://docs.spring.io/spring-boot/docs/2.1.7.RELEASE/reference/html/boot-features-developing-web-applications.html#boot-features-spring-mvc-auto-configuration)
+
+#### 4.3. 模板引擎Thymeleaf
+
+第一步：引入jar包（thymeleaf对应的starter）：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+第二步：配置 thymeleaf：
+
+```
+spring:
+  thymeleaf:
+  	prefix: classpath:/templates/
+  	check-template-location: true
+  	cache: false
+  	suffix: .html
+  	encoding: UTF-8
+  	content-type: text/html
+  	mode: HTML5
+```
+
+- prefix：指定模板所在的目录
+- check-tempate-location: 检查模板路径是否存在
+- cache: 是否缓存，开发模式下设置为false，避免改了模板还要重启服务器，线上设置为true，可以提高性能。
+- encoding&content-type：这个大家应该比较熟悉了，与Servlet中设置输出对应属性效果一致。　
+- mode：这个还是参考官网的说明吧，并且这个是2.X与3.0不同，本文自动引入的包是2.15。
+
+第三步 编写 thymeleaf 模板文件：
+
+只要把 HTML 页面放到 classpath:/templates/，`thymeleaf` 就能自动渲染；
+
+使用：
+
+1. 导入thymeleaf的名称空间
+
+   > ```jsp
+   > <html xmlns:th="http://www.thymeleaf.org">    
+   > ```
+
+2. thymeleaf 语法规则
+
+   1. 变量表达式(获取变量值)
+
+      > ```jsp
+      > <div th:text="'你是否读过，'+${session.book}+'!!'">
+      > </div>
+      > ```
+
+      ```jsp
+      代码分析：
+      1.可以看出获取变量值用$符号,对于javaBean的话使用变量名.属性名方式获取,这点和EL表达式一样
+      2.它通过标签中的th:text属性来填充该标签的一段内容，意思是$表达式只能写在th标签内部,不然不会生效,上面例子就是使用th:text标签的值替换div标签里面的值,至于div里面的原有的值只是为了给前端开发时做展示用的.这样的话很好的做到了前后端分离.意味着div标签中的内容会被表达式${session.book}的值所替代，无论模板中它的内容是什么，之所以在模板中“多此一举“地填充它的内容，完全是为了它能够作为原型在浏览器中直接显示出来。
+      3.访问spring-mvc中model的属性，语法格式为“${}”，如${user.id}可以获取model里的user对象的id属性 
+      4.牛叉的循环 
+         <tbody th:each="article : ${list}">
+           <tr>
+              <td th:text="${article.id}"></td>
+              <td th:text="${article.title}"></td>
+          </tr>
+          </tbody>
+      ```
+
+      2. URL表达式(引入URL)
+
+         - 引用静态资源文件(CSS使用th:href，js使用使用th:src)
+
+           ```html
+           <html xmlns:th="http://www.thymeleaf.org">
+           <head>
+               <!--jquery-3.5.0.js 放在目录resources/static/js下-->
+               <script type="text/javascript" th:src="@{js/jquery-3.5.0.js}"></script>
+               <script type="text/javascript" >
+                   alert($)
+               </script>
+           </head>
+           ```
+
+         - href 链接URL(使用th:href)
+
+           ```html
+           <link href="#" th:href="@{/css/signin.css}" rel="stylesheet" />
+           ```
+
+      3. 选择变量表达方法：语法：*{…}
+         也叫星号变量表达式，使用th:object属性来绑定对象，比如：
+
+         ```html
+         <div th:object="${session.user}">
+             <p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
+             <p>Surname: <span th:text="*{lastName}">Pepper</span>.</p>
+         </div>
+         
+         <!--等价于-->
+         
+         <div>
+           <p>Name: <span th:text="${session.user.firstName}">Sebastian</span>.</p>
+           <p>Surname: <span th:text="${session.user.lastName}">Pepper</span>.</p>
+         </div>
+         ```
+
+         官方参考文档：[usingthymeleaf](https://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html)
+
+#### 4.4. SpringMVC自动配置
+
+Spring Boot 自动配置好了SpringMVC ，SpringBoot 对 SpringMVC 的默认配置参考官方参考文档： [Developing web applications](https://docs.spring.io/spring-boot/docs/1.5.12.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
+
+##### 4.4.1. 扩展 springmvc
+
+编写一个配置类，直接实现WebMvcConfigurer，也可以直接继承WebMvcConfigurationSupport
+
+不能标注@EnableWebMvc，这样就既保留了配置，也能拓展我们自己的应用
+
+```java
+@Configuration
+public class MyMvcConfig implements WebMvcConfigurer {
+
+    @Override
+    protected void addViewControllers(ViewControllerRegistry registry) {
+        //super.addViewControllers(registry);
+        //浏览器发送 /aa 请求来到 success
+        registry.addViewController("/aa").setViewName("success");
+    }
+}
+```
+
+#### 4.5. RestfulCRUD
+
+首先下载前端 [登陆模板](http://www.cssmoban.com/cssthemes/7224.shtml)
+
+4.5.1. 国际化
+
+
+
