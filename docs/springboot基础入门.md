@@ -1032,7 +1032,7 @@ spring:
 
 使用：
 
-1. 导入thymeleaf的名称空间
+1. 导入 thymeleaf 的名称空间
 
    > ```jsp
    > <html xmlns:th="http://www.thymeleaf.org">    
@@ -1126,9 +1126,415 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 #### 4.5. RestfulCRUD
 
-首先下载前端 [登陆模板](http://www.cssmoban.com/cssthemes/7224.shtml)
+首先下载 [前端素材](https://pan.baidu.com/s/1yyjSeZcXd2RmaSwTtyCLig)，提取码：hb8k
 
-4.5.1. 国际化
+html 页面放入 templates 目录下，css img js 放入 static 目录下，pom.xml 添加依赖：
 
+```xml
+    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+```
 
+此时页面没有样式，所有页面的静态资源都需要使用 thymeleaf 接管： 
+
+- 导入 thymeleaf 的名称空间
+- 引用css img js ，修改为 thymeleaf 语法
+
+```xml
+#application.properties 关闭模板引擎缓存
+spring.thymeleaf.cache=false
+```
+
+参考官方文档：[Using Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+
+##### 4.5.1. 国际化
+
+在 resources 下新建文件夹 i18n ，新建文件login.properties、login_en_US.properties、login_zh_CN.properties，分别添加内容：
+
+```xml
+login.btn=登录
+login.password=密码
+login.remember=记住我
+login.tip=请登录
+login.username=用户名
+```
+
+```xml
+login.btn=Sign in
+login.password=Password
+login.remember=Remember me
+login.tip=Please sign in
+login.username=Username
+```
+
+```xml
+login.btn=登录
+login.password=密码
+login.remember=记住我
+login.tip=请登录
+login.username=用户名
+```
+
+在 application.properties 中指定
+
+```xml
+#我们配置文件的真实位置
+spring.messages.basename=i18n.login
+```
+
+修改 html 页面：
+
+```html
+<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+<input type="checkbox" value="remember-me"> Remember me
+```
+
+使用 thymeleaf 语法 #{} 引入修改为：
+
+```html
+<h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">Please sign in</h1>
+<input type="checkbox" value="remember-me" > [[#{login.remember}]]
+```
+
+其他页面的修改类似。接下来实现`LocaleResolver`接口，获取前端参数 L：
+
+```java
+public class MyLocaleResolver implements LocaleResolver {
+    @Override
+    public Locale resolveLocale(HttpServletRequest request) {
+        //获取请求中的参数链接
+        String Language = request.getParameter("L");
+        Locale local = Locale.getDefault();//如果没有就使用默认的
+        //如果请求的链接携带了国际化的参数
+        if(!StringUtils.isEmpty(Language)){
+            String[] split = Language.split("_");
+            //国家，地区
+            local = new Locale(split[0],split[1]);
+        }
+        return local;
+    }
+}
+```
+
+将 `MyLocaleResolver` 类通过`@bean` 注入IOC容器 ：
+
+```java
+@Configuration
+public class MyMvcConfig implements WebMvcConfigurer {
+    @Bean
+    public LocaleResolver localeResolver(){
+        return new MyLocaleResolver();
+    }
+    
+    //扩展 mvc 添加新的映射
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/index.html").setViewName("index");
+    }
+}
+```
+
+这样点击下面的超链接，就能实现中英切换了。
+
+```html
+<a class="btn btn-sm" th:href="@{/index.html(L='zh_CN')}">中文</a>
+<a class="btn btn-sm" th:href="@{/index.html(L='en_US')}">English</a>
+```
+
+##### 4.5.2. 登录功能实现
+
+页面添加 action 请求：
+
+```html
+	<form class="form-signin" th:action="@{/user/login}">
+        <button type="submit" th:text="#{login.btn}">Sign in</button>
+	</form>
+```
+
+添加 Controller 类：
+
+```java
+@Controller
+public class LoginController {
+    @RequestMapping("/user/login")
+    public String login(@RequestParam("username") String username, 			
+                        @RequestParam("password") String password, 
+                        Model model, 
+                        HttpSession session){
+        if(!StringUtils.isEmpty(username) && password.equals("123456")){
+            session.setAttribute("loginUser",username);
+            return "dashboard";
+        }else{
+            model.addAttribute("msg","用户名或密码错误!");
+            return "index";
+        }
+    }
+}
+```
+
+密码正确会跳转到 dashboard.html ，否则会跳转到 index.html 。失败跳转添加提示：
+
+```html
+<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+```
+
+但这种跳转用户名和密码会显示在页面，可以设置 controller 跳转 `main.html`，然后扩展 mvc 映射 `main.html` 到 dashboard。
+
+```java
+@Controller
+public class LoginController {
+    @RequestMapping("/user/login")
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password, Model model, HttpSession session){
+        if(!StringUtils.isEmpty(username) && password.equals("123456")){
+            session.setAttribute("loginUser",username);
+            return "redirect:/main.html";
+        }else{
+            model.addAttribute("msg","用户名或密码错误!");
+            return "index";
+        }
+    }
+}
+```
+
+```java
+@Configuration
+public class MyMvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/index.html").setViewName("index");
+        registry.addViewController("/main.html").setViewName("dashboard");
+    }
+}
+```
+
+但是这样即使不登录也可以访问主页面，添加登录拦截器。
+
+##### 4.5.3. 登录拦截器
+
+实现 `HandlerInterceptor`接口创建拦截器：
+
+```java
+public class LoginHandlerInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, 
+                             HttpServletResponse response, 
+                             Object handler) throws Exception {
+        Object loginUser = request.getSession().getAttribute("loginUser");
+        if (loginUser==null){
+            request.setAttribute("msg","没有权限,请先登录!");
+            request.getRequestDispatcher("/index.html").forward(request,response);
+            return false;
+        }else{
+            return true;
+        }
+    }
+}
+```
+
+在配置类中将拦截器注入到容器：
+
+```java
+@Configuration
+public class MyMvcConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginHandlerInterceptor())
+            .addPathPatterns("/**")
+            .excludePathPatterns("/index.html","/","/user/login");
+    }
+}
+```
+
+登录到主页后显示登录用户：
+
+```html
+<a> [[${session.loginUser}]] </a>
+```
+
+##### 4.5.4. 员工增删查改
+
+引入`lombok`，可以减少一些  `get/set/toString` 方法的编写
+
+```xml
+  <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+  </dependency>
+```
+
+创建`pojo`类：
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Department {
+    private Integer id;
+    private String departmentName;
+}
+```
+
+```java
+@Data
+@NoArgsConstructor
+public class Employee {
+    private Integer id;
+    private String lastName;
+    private String email;
+    private Integer gender;// 0 男 1女
+    private Department department;
+    private Date birth;
+
+    public Employee(Integer id, 
+                    String lastName, 
+                    String email, 
+                    Integer gender, 
+                    Department department) {
+        this.id = id;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.department = department;
+        //创建默认的日期
+        this.birth = new Date();
+    }
+}
+```
+
+创建 `dao` 类：
+
+```java
+@Repository
+public class DepartmentDao {
+    //模拟数据库中的数据
+    private static Map<Integer, Department> departments=null;
+    static{
+        departments=new HashMap<Integer, Department>();//创建一个部门表
+        departments.put(101,new Department(101,"教学部"));
+        departments.put(102,new Department(102,"市场部"));
+        departments.put(103,new Department(103,"教研部"));
+        departments.put(104,new Department(104,"运营部"));
+        departments.put(105,new Department(105,"后勤部"));
+    }
+    //获得所有部门信息
+    public Collection<Department> getDepartment(){
+        return departments.values();
+    }
+    //通过id得到部门
+    public Department getDepartmentById(Integer id){
+        return departments.get(id);
+    }
+}
+```
+
+```java
+@Repository
+public class EmployeeDao {
+    //模拟数据库的信息
+    private static Map<Integer, Employee> employees=null;
+    //员工所属的部门
+    @Autowired
+    private DepartmentDao departmentDao;
+    static {
+        employees=new HashMap<Integer, Employee>();
+        employees.put(1001,new Employee(1001,"AA1","1918308849@qq.com",0,new Department(101,"教学部")));
+        employees.put(1002,new Employee(1002,"AA2","1918308849@qq.com",1,new Department(102,"市场部")));
+        employees.put(1003,new Employee(1003,"AA3","1918308849@qq.com",0,new Department(103,"教研部")));
+        employees.put(1004,new Employee(1004,"AA4","1918308849@qq.com",1,new Department(104,"运营部")));
+        employees.put(1005,new Employee(1005,"AA5","1918308849@qq.com",0,new Department(105,"后勤部")));
+    }
+    
+    //主键自增
+    private static Integer initId=1006;
+    
+    //增加一个员工
+    public void save(Employee employee){
+        if(employee.getId()==null){
+            employee.setId(initId++);
+        }
+        employee.setDepartment(departmentDao.
+                               getDepartmentById(employee.getDepartment().getId()));
+        employees.put(employee.getId(),employee);
+    }
+    
+    //查询全部员工信息
+    public Collection<Employee> getAll(){
+        return employees.values();
+    }
+    
+    //通过id查询员工
+    public Employee getEmployeeById(Integer id){
+        return  employees.get(id);
+    }
+    
+    //删除员工通过id
+    public void delete(Integer id){
+        employees.remove(id);
+    }
+}
+```
+
+创建 `controller` 类：
+
+```java
+@Controller
+public class EmployeeController {
+    @Autowired
+    EmployeeDao employeeDao;
+    @Autowired
+    DepartmentDao departmentDao;
+    @RequestMapping("/emps")
+    public String list(Model model){
+        Collection<Employee> employees=employeeDao.getAll();
+        model.addAttribute("emps",employees);
+        return "emp/list";
+    }
+    @GetMapping("/emp")
+    public String toAddpage(Model model){
+        //查询所有部门的信息
+        Collection<Department> departments=departmentDao.getDepartment();
+        System.out.println(departments);
+        model.addAttribute("departments",departments);
+        return "emp/add";
+    }
+    @PostMapping("/emp")
+    public String addEmp(Employee employee){
+        //添加操作
+        System.out.println("save employee:"+employee);
+        employeeDao.save(employee);
+        return "redirect:/emps";
+    }
+    //去员工的修改页面
+    @GetMapping("/emp/{id}")
+    public String toUpdateEmp(@PathVariable("id")Integer id,Model model){
+        //查出原来的数据
+        Employee employee=employeeDao.getEmployeeById(id);
+        System.out.println(employee);
+        model.addAttribute("emp",employee);
+        //查询所有部门信息
+        Collection<Department> departments=departmentDao.getDepartment();
+        System.out.println(departments);
+        model.addAttribute("departments",departments);
+        return "emp/update";
+    }
+    @PostMapping("/updateEmp")
+    public String updateEmp(Employee employee){
+        employeeDao.save(employee);
+        return "redirect:/emps";
+    }
+    @GetMapping("/delemp/{id}")
+    public String toDeleteEmp(@PathVariable("id")Integer id){
+        employeeDao.delete(id);
+        return "redirect:/emps";
+    }
+    @RequestMapping("/user/logout")
+    public String UserLogout(HttpSession session){
+        session.invalidate();
+        return "redirect:/index.html";
+    }
+}
+```
 
