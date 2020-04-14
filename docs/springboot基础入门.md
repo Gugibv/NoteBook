@@ -806,7 +806,7 @@ public class HelloController {
 控制台不打印，直接输出到日志文件，先来看下配置文件：
 
 <div align="center"> <img src="pics/输出到日志配置文件.png" width="800"/> </div>
-参考文章：《[看完这个不会配置 logback ，请你吃瓜！](https://juejin.im/post/5b51f85c5188251af91a7525)》
+参考文章：[《看完这个不会配置 logback ，请你吃瓜！》](https://juejin.im/post/5b51f85c5188251af91a7525)
 
 ### 四、web开发
 
