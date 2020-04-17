@@ -806,7 +806,7 @@ public class HelloController {
 控制台不打印，直接输出到日志文件，先来看下配置文件：
 
 <div align="center"> <img src="pics/输出到日志配置文件.png" width="800"/> </div>
-参考文章：[《看完这个不会配置 logback ，请你吃瓜！》](https://juejin.im/post/5b51f85c5188251af91a7525)
+参考文章：《[看完这个不会配置 logback ，请你吃瓜！](https://juejin.im/post/5b51f85c5188251af91a7525)》
 
 ### 四、web开发
 
@@ -1081,25 +1081,27 @@ spring:
            ```html
            <link href="#" th:href="@{/css/signin.css}" rel="stylesheet" />
            ```
-
-      3. 选择变量表达方法：语法：*{…}
+         
+           href 路径默认的 /static 不用写。
+   
+3. 选择变量表达方法：语法：*{…}
          也叫星号变量表达式，使用th:object属性来绑定对象，比如：
-
-         ```html
-         <div th:object="${session.user}">
-             <p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
-             <p>Surname: <span th:text="*{lastName}">Pepper</span>.</p>
-         </div>
-         
-         <!--等价于-->
-         
-         <div>
-           <p>Name: <span th:text="${session.user.firstName}">Sebastian</span>.</p>
-           <p>Surname: <span th:text="${session.user.lastName}">Pepper</span>.</p>
-         </div>
-         ```
-
-         官方参考文档：[usingthymeleaf](https://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html)
+     
+     ~~~html
+     ```html
+     <div th:object="${session.user}">
+         <p>Name: <span th:text="*{firstName}">Sebastian</span>.</p>
+         <p>Surname: <span th:text="*{lastName}">Pepper</span>.</p>
+     </div>
+     
+     <!--等价于-->
+     
+     <div>
+       <p>Name: <span th:text="${session.user.firstName}">Sebastian</span>.</p>
+     <p>Surname: <span th:text="${session.user.lastName}">Pepper</span>.</p>
+    </div>
+   ~~~
+    官方参考文档：[usingthymeleaf](https://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html)
 
 #### 4.4. SpringMVC自动配置
 
@@ -1343,7 +1345,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
             .addPathPatterns("/**")
-            .excludePathPatterns("/index.html","/","/user/login");
+            .excludePathPatterns("/index.html","/","/user/login",
+                        "/css/**","/img/**","/js/**");
     }
 }
 ```
@@ -1496,14 +1499,12 @@ public class EmployeeController {
     public String toAddpage(Model model){
         //查询所有部门的信息
         Collection<Department> departments=departmentDao.getDepartment();
-        System.out.println(departments);
         model.addAttribute("departments",departments);
         return "emp/add";
     }
     @PostMapping("/emp")
     public String addEmp(Employee employee){
         //添加操作
-        System.out.println("save employee:"+employee);
         employeeDao.save(employee);
         return "redirect:/emps";
     }
@@ -1512,11 +1513,9 @@ public class EmployeeController {
     public String toUpdateEmp(@PathVariable("id")Integer id,Model model){
         //查出原来的数据
         Employee employee=employeeDao.getEmployeeById(id);
-        System.out.println(employee);
         model.addAttribute("emp",employee);
         //查询所有部门信息
         Collection<Department> departments=departmentDao.getDepartment();
-        System.out.println(departments);
         model.addAttribute("departments",departments);
         return "emp/update";
     }
@@ -1537,4 +1536,685 @@ public class EmployeeController {
     }
 }
 ```
+
+修改html 页面，可以将页面公共的部分通过 `th:fragment`定义，例如在首页`dashboard .html`侧边栏加上ID：
+
+```html
+<nav class="" th:fragment="sidebar">...</nav>
+```
+
+然后另外一个 `list.html` 页面引用：
+
+```html
+<div th:replace="~{dashboard::sidebar}"></div>
+```
+
+也可以将公共的部分放到独立的一个页面，例如` /commons/common.html`，
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<!--头部导航栏-->
+<nav class="..." th:fragment="topbar">...</nav>
+<!--侧边栏-->
+<nav class="..." th:fragment="sidebar">...</nav>
+
+</html>
+```
+
+然后首页页面 `dashboard .html` 和 员工页面 `list.html` 分别引用头部导航栏 和 侧边栏：
+
+```html
+<div th:replace="~{commons/commons::topbar}"></div>
+
+<div th:replace="~{commons/commons::sidebar}"></div>
+```
+
+`common.html` 页面中，高亮的选项 class 内容是：
+
+```html
+<a class="nav-link active" th:href="@{/index.html}"> 首页 </a>
+```
+
+如何实现选中的选项高亮? 在`dashboard .html`传值
+
+```html
+<div th:replace="~{commons/commons::sidebar(active='main.html')}"></div>
+```
+
+`list.html` 传值：
+
+```html
+<div th:replace="~{commons/commons::sidebar(active='list.html')}"></div>
+```
+
+`common.html` 页面加上判断：
+
+```html
+<a th:class="${active=='main.html'?'nav-link active':'nav-link'}" 		th:href="@{/index.html}">首页</a>
+```
+
+```html
+<a th:class="${active=='list.html'?'nav-link active':'nav-link'}" th:href="@{/emps}">
+```
+
+这样就实现了点击首页，首页选项高亮；点击员工管理，员工管理选项高亮。
+
+接下来实现页面员工数据展示：
+
+```html
+<table class="...">
+<thead>
+    <tr>
+        <th>id</th>
+        <th>lastName</th>
+        <th>email</th>
+        <th>gender</th>
+        <th>department</th>
+        <th>birth</th>
+        <th>操作</th>
+    </tr>
+</thead>
+<tbody>
+<tr th:each="emp:${emps}">
+    <td th:text="${emp.getId()}"></td>
+    <td th:text="${emp.getLastName()}"></td>
+    <td th:text="${emp.getEmail()}"></td>
+    <td th:text="${emp.getGender()==0?'女':'男'}"></td>
+	<td th:text="${emp.getDepartment().getDepartmentName()}"></td>
+    <td th:text="${#dates.format(emp.getBirth(),'yyyy-MM-dd HH:mm:ss')}"></td>
+    <td>
+        <a class="btn btn-sm btn-primary" th:href="@{'/emp/'+${emp.getId()}}">编辑</a>								
+        <a class="btn btn-sm btn-danger" th:href="@{'/delemp/'+${emp.getId()}}">删除</a>
+    </td>
+    </tr>
+</tbody>
+</table>
+```
+
+**添加员工**
+
+```html
+<h2><a class="btn btn-sm btn-success" th:href="@{/emp}">添加员工</a> </h2>
+```
+
+通过上面 controller 类跳转到 `add.html`，这里列举部分：
+
+```html
+<form th:action="@{/emp}" method="post">
+      <input type="hidden" th:value="${emp.getId()}" name="id">
+     <div class="form-group">
+              <label>姓名</label>
+                    <input th:value="${emp.getLastName()}" 
+                           type="text" 
+                           name="lastName" 
+                           class="form-control" 
+                           placeholder="gugibv">
+                </div>
+
+                <div class="form-group">
+                    <label>性别</label><br/>
+                    <div class="form-check form-check-inline">
+                        <input th:checked="${emp.getGender()==1}" 
+                               class="form-check-input" 
+                               type="radio" 
+                               name="gender" 
+                               value="1">
+                        <label class="form-check-label">男</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input th:checked="${emp.getGender()==0}" 
+                               class="form-check-input" 
+                               type="radio" 
+                               name="gender" 
+                               value="0">
+                        <label class="form-check-label">女</label>
+                    </div>
+                </div>
+                <div class="form-group">
+
+                <label>部门选择</label>
+                    <select class="form-control" name="department.id">
+                        <option th:selected="${dept.getId()==
+                                             emp.getDepartment().getId()}"
+                                th:each="dept:${departments}"
+                                th:text="${dept.getDepartmentName()}"
+                                th:value="${dept.getId()}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>出生日期</label>
+                    <input th:value="${#dates.format(emp.getBirth(),
+                                     'yyyy-MM-dd HH:mm:ss')}"
+                           type="text" 
+                           name="birth" 
+                           class="form-control" 
+                           placeholder="yyyy-MM-dd">
+                </div>
+                <button type="submit" class="btn btn-primary">添加</button>
+ </form>
+```
+
+[参考代码](https://pan.baidu.com/s/15Niw-GdAQUb11MN2gH48Lw)，提取码：68b4
+
+##### 4.5.5. 错误机制的处理
+
+ **如何定制错误的页面？**
+
+1. 有模板引擎的情况下
+
+   静态资源/404.html,什么错误什么页面；所有以4开头的 4xx.html 5开头的5xx.html
+
+   ```html
+   页面获得的数据：
+   timestamp：时间戳
+   status：状态码
+   error：错误提示
+   exception：异常对象
+   message：异常信息
+   errors:JSR303有关
+   
+   例如创建：
+   +-resources/
+   	+-templates/
+   		+-error
+   			+-4xx.html
+   			+-5xx.html
+   页面获取：
+   <body >
+       <p>status: [[${status}]]</p>
+       <p>timestamp: [[${timestamp}]]</p>
+       <p>error: [[${error}]]</p>
+       <p>message: [[${message}]]</p>
+       <p>exception: [[${exception}]]</p>
+   </body>
+   ```
+
+   
+
+2. 没有模板引擎（模板引擎找不到这个错误页面），静态资源文件夹下找，就是没法使用模板取值
+
+3. 以上都没有错误页面，就是默认来到SpringBoot默认的错误提示页面
+
+#### 4.6. 整合jdbc使用
+
+对于数据库的访问，无论是 SQL（关系型数据库）还是 NOSQL（非关系型数据库），Spring Boot 底层都是采用 Spring Data 的方式进行统一处理。Spring Data 也是 spring 中与 Spring Boot、Spring Cloud 等齐名的知名项目。
+
+IDEA 创建： 
+
+File ——>new project ——> 选择spring Initailizr ——> 默认Default:https://start.spring.io，点击next
+
+——>选择配置依赖（勾选SQL:JDBC API） ——> 输入项目名称 ——> 点击完成
+
+引入 mysql driver 依赖
+
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+配置application.yml：
+
+```xml
+spring:
+  datasource:
+    username: root
+    password: rootroot
+    url: jdbc:mysql://localhost:3306/ssm?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+```
+
+url 列举几个重要的参数：
+
+| 参数名称              | 参数说明                                                     | 缺省值 |
+| --------------------- | ------------------------------------------------------------ | ------ |
+| user                  | 数据库用户名（用于连接数据库）                               |        |
+| password              | 用户密码（用于连接数据库）                                   |        |
+| useUnicode            | 是否使用Unicode字符集，如果参数characterEncoding设置为gb2312或gbk，本参数值必须设置为true | false  |
+| characterEncoding     | 当useUnicode设置为true时，指定字符编码。比如可设置为gb2312或gbk |        |
+| autoReconnect         | 当数据库连接异常中断时，是否自动重新连接？                   | false  |
+| autoReconnectForPools | 是否使用针对数据库连接池的重连策略                           | false  |
+| failOverReadOnly      | 自动重连成功后，连接是否设置为只读？                         | true   |
+| maxReconnects         | autoReconnect设置为true时，重试连接的次数                    | 3      |
+| initialTimeout        | autoReconnect设置为true时，两次重连之间的时间间隔，单位：秒  | 2      |
+| connectTimeout        | 和数据库服务器建立socket连接时的超时，单位：毫秒。 0表示永不超时，适用于JDK 1.4及更高版本 | 0      |
+| socketTimeout         | socket操作（读写）超时，单位：毫秒。 0表示永不超时           | 0      |
+
+测试输出：
+
+```java
+@SpringBootTest
+class SpringbootJdbcApplicationTests {
+    @Autowired
+    DataSource dataSource;
+
+    @Test
+    void contextLoads() throws SQLException {
+        //查看一下默认的数据源：com.zaxxer.hikari.HikariDataSource
+        System.out.println(dataSource.getClass());
+
+        //获得数据库连接
+        Connection connetction = dataSource.getConnection();
+        System.out.println(connetction);
+		//输出： com.mysql.cj.jdbc.ConnectionImpl@eca6a74
+        connetction.close();
+    }
+}
+```
+
+测试查询：
+
+```java
+@RestController
+public class jdbController {
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+    //xxxxTemplate ：Springboot 已经配置好的模板bean ,拿来调用其中的方法即用
+
+    @GetMapping("/userlist")
+    public List<Map<String,Object>> userList(){
+        String sql = "select * from TB_BankInfo";
+        List<Map<String,Object>> results = jdbcTemplate.queryForList(sql);
+        return  results;
+    }
+}
+```
+
+@RestController相当于 @ResponseBody ＋ @Controller ，返回页面用@Controller，要想返回数据就用@RestController,这个注解对于返回数据比较方便，因为它会自动将对象实体转换为JSON格式
+
+#### 4.7. 整合Druid数据源
+
+ Druid 是阿里巴巴开源平台上的一个数据库连接池实现，结合了C3P0、DBCP、PROXOOL 等 DB 池的优点，同时加入了日志监控。
+
+Druid 可以很好的监控 DB 池连接和 SQL 的执行情况，天生就是针对监控而生的 DB 连接池。
+
+Spring Boot 2.0 以上默认使用 Hikari 数据源，可以说 Hikari 与 Driud 都是当前 Java Web 上最优秀的数据源。
+
+导入 Druid 依赖：
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.1.22</version>
+</dependency>
+```
+
+在 application.yml 中指定 Type：
+
+```xml
+spring:
+  datasource:
+    username: root
+    password: rootroot
+    url: jdbc:mysql://localhost:3306/ssm?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+```
+
+测试输出：
+
+```java
+@SpringBootTest
+class SpringbootJdbcApplicationTests {
+    @Autowired
+    DataSource dataSource;
+
+    @Test
+    void contextLoads() throws SQLException {
+        //查看一下默认的数据源：com.alibaba.druid.pool.DruidDataSource
+        System.out.println(dataSource.getClass());
+
+        //获得数据库连接
+        Connection connetction = dataSource.getConnection();
+        System.out.println(connetction);
+		//输出： com.mysql.cj.jdbc.ConnectionImpl@eca6a74
+        connetction.close();
+    }
+}
+```
+
+druid 数据源专有配置：
+
+```xml
+spring:
+  datasource:
+    username: root
+    password: rootroot
+    url: jdbc:mysql://localhost:3306/eaotst?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    #springboot 默认是不注入这些属性值得，需要自己绑定
+    #druid 数据源专有配置
+    initial-size: 5
+    min-idle: 5
+    max-active: 20                   			   #配置获取连接等待超时的时间
+    max-wait: 60000                  #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    time-between-eviction-runs-millis: 60000       #配置一个连接在池中最小生存的时间，单位是毫秒
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    pool-prepared-statements: true
+	#配置监控统计拦截的filters，去掉后监控界面sql无法统计
+    #stat：监控统计，log4j：日志记录，wall：防御sql注入
+    max-pool-prepared-statement-per-connection-size: 20
+    filters: stat,log4j,wall
+    use-global-data-source-stat: true
+    #通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+```
+
+druid 其他具体配置具体参考 [官网](https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter)
+
+导入 Log4j 依赖：
+
+```xml
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+```
+
+配置 config:
+
+```java
+@Configuration
+public class DruidConfig {
+    @ConfigurationProperties(prefix = "spring.datasource")
+    @Bean
+    public DataSource druidDataSource(){
+        return  new DruidDataSource();
+    }
+    
+    //后台监控：web.xml ,ServletRegistrationBean
+    //因为SpringBoot 内置了 servlet 容器，所以没有web.xml ，替代方法 ServletRegistrationBean
+    @Bean
+    public ServletRegistrationBean statViewServlet(){
+        ServletRegistrationBean<StatViewServlet> bean = 
+            new ServletRegistrationBean<>(new StatViewServlet(),"/druid/*");
+
+        //后台需要有人登陆，账号密码设置
+        HashMap<String,String> initParameters = new HashMap<>();
+        //增加配置
+        //登陆key 是固定的 loginUsername loginPassword
+        initParameters.put("loginUsername","admin"); 
+        initParameters.put("loginPassword","123456");
+
+        //允许谁可以访问
+        initParameters.put("allow","");// 为空都可以访问
+
+        //禁止谁访问 initParameters.put("gugibv","192.168.11.123");
+        bean.setInitParameters(initParameters);//设置池初始化参数
+
+        return bean;
+    }
+    
+    //
+    @Bean
+    public FilterRegistrationBean webstatFilter(){
+        FilterRegistrationBean bean = new FilterRegistrationBean();
+        bean.setFilter(new WebStatFilter());
+        //可以过滤哪些请求呢？
+        Map<String,String> initParameter = new HashMap<>();
+
+        initParameter.put("exclusions","*.js,*.css,/druid/*");
+        bean.setInitParameters(initParameter);
+
+        return bean;
+    }
+}
+```
+
+这样就可以访问控制台：http://localhost:8080/druid/
+
+#### 4.8. 整合Mybatis框架
+
+导入依赖：
+
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.mybatis.spring.boot</groupId>
+    <artifactId>mybatis-spring-boot-starter</artifactId>
+    <version>2.1.1</version>
+</dependency>
+```
+
+引入`lombok`，可以减少一些  `get/set/toString` 方法的编写
+
+```xml
+  <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+  </dependency>
+```
+
+创建`pojo`类：
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+    private String id;
+    private String name;
+    private int age;
+}
+```
+
+创建Mapper接口:
+
+```java
+@Mapper
+@Repository
+public interface UserMapper {
+    List<Map<String,String>> queryUserList();
+    Map<String,String> queryUserById(int id);
+}
+```
+
+在 resources 创建 mybatis/mapper/ 文件夹，创建 UserMapper.xml，配置：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootjdbc.mapper.BankMapper">
+    <select id="queryUserList" resultType="User">
+          select * from user
+    </select>
+
+    <select id="queryUserById" resultType="User">
+          select * from user where id = #{id}
+    </select>
+</mapper>
+```
+
+配置application.yml：
+
+```xml
+spring:
+  datasource:
+    username: root
+    password: rootroot
+    url: jdbc:mysql://localhost:3306/ssm?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+
+# 整合mybatis
+mybatis:
+  type-aliases-package: com.example.springbootjdbc.pojo
+  mapper-locations: classpath:mybatis/mapper/*.xml
+```
+
+controller 查询：
+
+```java
+@RestController
+public class UserController {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @GetMapping("/userlist")
+    public List<User> queryUserList(){
+       List<User> userList = userMapper.queryUserList();
+        return  userList;
+    }
+
+    @GetMapping("/queryUserById")
+    public User queryUserById(@RequestParam(value="id") int ID){
+        User user = userMapper.queryUserById(ID);
+        return user;
+    }
+    
+ /* 或者 restful 风格  
+    @GetMapping("/queryUserById/{id}")
+    public User queryUserById(@PathVariable("id") int ID){
+        User user = userMapper.queryUserById(ID);
+        return user;
+    }
+ */
+}
+```
+
+页面访问测试查询结果：http://localhost:8080/queryUserById?id=1
+
+#### 4.8.  springsecurity环境搭建
+
+springsecurity 是针对 spring 项目的安全框架，也是 Spring Boot 底层安全模块默认的技术选项，它可以实现强大的 web 安全控制，我们仅需要引入`spring-boot-starter-security`模块，进行少量的配置，即可实现强大的安全管理。
+
+记住几个类：
+
+- WebSecurityConfigurerAdapter ：自定义安全策略
+- AuthenticationManagerBuilder ：自定义认证策略
+- EnableWebSecurity ：开启 WebSecurity 模式
+
+Spring Security 的两个主要目标是“认证”和“授权”（访问控制）。
+
+“认证” Authentication
+
+“授权” Authorization
+
+概念是通用的，而不只是 Spring Security 中存在。
+
+引入web和security的依赖
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+现在，我们创建一个`Controller`类作为接口进行测试：
+
+```java
+@RestController
+public class DemoController{
+        @GetMapping("/")
+        public String home(){
+            return "hello";
+        }
+}
+```
+
+访问 http://localhost:8080/ 自动跳转到登录页面说明 security 的环境已经搭建成功。
+
+接下来，我们正式进行Spring Security的配置。
+
+在刚刚创建的Controller类中增加一个接口test：
+
+```java
+@GetMapping("/test")
+    public String test(){
+    return "test authentication";
+}
+```
+
+然后创建`SpringSecurityConfig`类并继承`WebSecurityConfigurerAdapter`类，具体实现如下：
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        //允许访问项目主路径/的请求，其它请求都要经过拦截验证
+        //同时也允许注销请求，支持表单验证登录
+        //取消掉默认的csrf认证
+        http.authorizeRequests()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .logout().permitAll()
+                .and()
+                .formLogin();
+        http.csrf().disable();
+    }
+}
+
+```
+
+现在启动项目，继续访问http://localhost:8080/ 页面成功放回了`hello`,http://localhost:8080/test则会被拦截。因为我们在`SpringSecurityConfig`类中配置了放行`主路径/`的请求和`注销`请求，而拦截所有其他请求。
+
+Controller类中新增一个接口test2：
+
+```java
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/test2")
+    public String test2(){
+        return "admin auth";
+    }
+```
+
+`ROLE_`是 SpringS ecurity 要求的权限前缀
+
+这里`@PreAuthorize`注解发生在方法执行前，意思是要求执行此方法要有`ADMIN`权限
+
+在配置类中 `SpringSecurityConfig` 重写 `configure`方法：
+
+```java
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("scott").password("{noop}scott").roles("USER");
+    }
+```
+
+重新启动项目，现在访问http://localhost:8080/test输入账号/密码为admin/admin就可以通过验证，而其它的如scott 用户则不可以。
+
+前端一些图标的修改可以参考：[semantic-ui](https://semantic-ui.com/)
+
+#### 4.9. shiro快速开始
+
+#### 4.11. swagger介绍与集成
+
+#### 4.12. 异步任务
+
+#### 4.13. 邮件任务
+
+#### 4.14. 定时任务
+
+#### 4.15. springboot集成redis
+
+#### 4.16. Duboo及Zookeeper快速开始
 
