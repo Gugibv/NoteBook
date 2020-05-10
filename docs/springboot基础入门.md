@@ -2137,7 +2137,7 @@ public class DemoController{
 }
 ```
 
-访问 http://localhost:8080/ 自动跳转到登录页面说明 security 的环境已经搭建成功。
+访问` http://localhost:8080/` 自动跳转到登录页面说明 security 的环境已经搭建成功。
 
 接下来，我们正式进行Spring Security的配置。
 
@@ -2174,7 +2174,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 
-现在启动项目，继续访问http://localhost:8080/ 页面成功放回了`hello`,http://localhost:8080/test则会被拦截。因为我们在`SpringSecurityConfig`类中配置了放行`主路径/`的请求和`注销`请求，而拦截所有其他请求。
+现在启动项目，继续访问`http://localhost:8080/` 页面成功放回了`hello`,`http://localhost:8080/test` 则会被拦截。因为我们在`SpringSecurityConfig`类中配置了放行`主路径/`的请求和`注销`请求，而拦截所有其他请求。
 
 Controller类中新增一个接口test2：
 
@@ -2200,9 +2200,31 @@ Controller类中新增一个接口test2：
     }
 ```
 
-重新启动项目，现在访问http://localhost:8080/test输入账号/密码为admin/admin就可以通过验证，而其它的如scott 用户则不可以。
+重新启动项目，现在访问`http://localhost:8080/test`输入账号/密码为`admin/admin`就可以通过验证，而其它的如 scott 用户则不可以。
 
 前端一些图标的修改可以参考：[semantic-ui](https://semantic-ui.com/)
+
+**springsecurity 与 thymeleaf 整合**
+
+导入依赖包
+
+```xml
+<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+    <version>3.0.2.RELEASE</version>
+</dependency>
+```
+
+```xml
+<dependency>
+    <groupId>org.thymeleaf</groupId>
+    <artifactId>thymeleaf</artifactId>
+    <version>3.0.11.RELEASE</version>
+</dependency>
+```
+
+
 
 #### 4.9. shiro快速开始
 
