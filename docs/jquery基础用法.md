@@ -1,3 +1,5 @@
+笔记来源：《[李南江亲授-jQuery+Ajax从放弃到知根知底](https://www.bilibili.com/video/BV17W41137jn?p=4)》
+
 1、如何使用jQuery
 
 下载 jquery 库：[下载地址](https://jquery.com/download/) 
@@ -75,10 +77,4 @@
    是在 html所有标签都加载之后，就回去执行。可以写多个。
 
 2. 获取元素的方式不同
-
-
-
-https://www.bilibili.com/video/BV17W41137jn?p=4  p1-p3
-
-
 
