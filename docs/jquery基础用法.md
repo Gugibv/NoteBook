@@ -1,6 +1,6 @@
 笔记来源：《[李南江亲授-jQuery+Ajax从放弃到知根知底](https://www.bilibili.com/video/BV17W41137jn?p=4)》
 
-1、如何使用jQuery
+### 1、如何使用jQuery
 
 下载 jquery 库：[下载地址](https://jquery.com/download/) 
 
@@ -27,7 +27,7 @@
 </script>
 ```
 
-2、jQuery 和原生 js 的区别
+### 2、jQuery 和原生 js 的区别
 
 ```js
 <head>

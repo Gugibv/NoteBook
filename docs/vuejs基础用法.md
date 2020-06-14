@@ -27,7 +27,7 @@
 
 方式二：下载和引入
 
-```js
+```html
 开发环境 https://vuejs.org/js/vue.js 
 
 生产环境 https://vuejs.org/js/vue.min.js
@@ -39,7 +39,7 @@
 
 #### 1.2、小案例-计数器
 
-```js
+```html
  <div id="app">
        <div class="input-num">
          <button @click="sub">-</button>
@@ -68,7 +68,10 @@
 
 #### 1.3、vue的mvvm
 
-<div align="center"> <img src="pics/vue的mvvm.jpg" width="500"/> </div><br>View层：
+<div align="center"> <img src="pics/vue的mvvm.jpg" width="500"/> </div><br>
+
+
+View层：
 
 - 视图层，在我们前端开发中，通常就是DOM层。主要的作用是给用户展示各种信息。
 
@@ -106,3 +109,367 @@ data：Vue实例对应的数据对象（组件当中data必须是一个函数）
 methods：定义属于Vue的一些方法，可以在其他地方调用，也可以在指令中使用
 
 #### 1.5、Vue的生命周期
+
+<div align="center"> <img src="pics/vue生命周期.png" width="950"/> </div><br>
+
+### 二、基础语法
+
+#### 2.1、插值操作
+
+##### 2.1.1、Mustache语法
+
+也就是双大括号
+
+我们可以像下面这么使用，并且数据是响应式的
+
+```html
+ <div id="app">
+        <h2>hello,{{name}}</h2>
+		<h2>{{firstName}} {{lastName}}</h2>
+        <h2>{{counter * 2}}</h2>
+ </div>
+ <script src="../js/vue.js"></script>
+ <script>
+       let vm = new Vue({
+         el: '#app',
+         data: {
+           name:'VueJS',
+           firstName:'coder',
+           lastName: 'why',
+           counter:100
+        }
+      })
+ </script>
+```
+
+##### 2.1.2、v-once
+
+在某些情况下，我们不希望界面随意的跟随改变，这个时候，我们就可以使用 `v-once `指令
+
+- 该指令后面不需要跟任何表达式(比如之前的v-for后面是有跟表达式的)
+- 该指令表示元素和组件(组件后面才会学习)只渲染一次，不会随着数据的改变而改变。
+
+```html
+ <div id="app">
+        <h2 v-once="message"></h2>
+ </div>
+ <script src="../js/vue.js"></script>
+ <script>
+       let vm = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello World！'
+        }
+      })
+ </script>
+```
+
+就算对变量重新赋值，页面显示也不会改变
+
+```js
+vm.message = 'java gogogo'
+```
+
+##### 2.1.3、v-html
+
+如果我们希望解析出HTML展示，可以使用v-html指令
+
+- 该指令后面往往会跟上一个string类型
+- 会将string的html解析出来并且进行渲染
+
+```html
+ <div id="app">
+        <h2 v-html="link"></h2>
+        <h2>{{link}}</h2>
+ </div>
+ <script src="../js/vue.js"></script>
+ <script>
+       let vm = new Vue({
+        el: '#app',
+        data: {
+          link: '<a href="http://wwww.baidu.com">百度一下</a>'
+        }
+      })
+ </script>
+```
+
+##### 2.1.4、v-text
+
+- v-text作用和Mustache比较相似：都是用于将数据显示在界面中
+- v-text通常情况下，接受一个string类型
+
+```html
+ <div id="app">
+        <h2 v-text="message"></h2>
+        <h2>{{message}}</h2>
+ </div>
+ <script src="../js/vue.js"></script>
+ <script>
+       let vm = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello World！'
+        }
+      })
+ </script>
+```
+
+##### 2.1.5、v-pre
+
+v-pre用于跳过这个元素和它子元素的编译过程，用于显示原本的Mustache语法。
+
+比如下面的代码：
+
+- 第一个h2元素中的内容会被编译解析出来对应的内容
+
+- 第二个h2元素中会直接显示{{message}}
+
+```html
+ <div id="app">
+        <h2>{{message}}</h2>
+        <h2 v-pre="message"></h2>
+ </div>
+ <script src="../js/vue.js"></script>
+ <script>
+       let vm = new Vue({
+          el: '#app',
+          data: {
+            message: 'Hello World！'
+        }
+      })
+ </script>
+```
+
+##### 2.1.6、v-cloak
+
+- 在某些情况下，我们浏览器可能会直接显然出未编译的Mustache标签。
+- cloak: 斗篷
+
+```html
+ <style>
+     [v-cloak]{
+         dispaly:none;
+     }
+ <style>
+ <div id="app">
+        <h2 v-cloak>Hello {{name}}</h2>
+ </div>
+ <script src="../js/vue.js"></script>
+ <script>
+     setTimeout(()=>{
+         let vm = new Vue({
+        	 el: '#app',
+         	 data: {
+           		name: 'VueJS！'
+           }
+        })
+     },10000)
+ </script>
+```
+
+添加了`v-cloak`会渲染完成后再显示
+
+#### 2.2、绑定属性
+
+##### 2.2.1、v-bind基础语法
+
+v-bind用于绑定一个或多个属性值，或者向另一个组件传递props值(这个学到组件时再介绍)
+
+在开发中，有哪些属性需要动态进行绑定呢？
+
+- 还是有很多的，比如图片的链接src、网站的链接href、动态绑定一些类、样式等等
+
+比如通过Vue实例中的data绑定元素的src和href，代码如下：
+
+```html
+<div id="app">
+    <a v-bind:href="link">vue官网</a>
+    <img v-bind:src="logoURL" alt="">
+
+    <!--语法糖，省略写法-->
+    <a :href="link">vue官网</a>
+    <img :src="logoURL" alt="">
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            link:'https://cn.vuejs.org/index.html',
+            logoURL:'https://cn.vuejs.org/images/logo.png'
+        }
+    })
+</script>
+```
+
+##### 2.2.2、v-bind绑定class
+
+很多时候，我们希望动态的来切换class，比如：
+
+- 当数据为某个状态时，字体显示红色。
+
+- 当数据另一个状态时，字体显示黑色。
+
+绑定class有两种方式：
+
+- 对象语法
+
+- 数组语法
+
+绑定方式：对象语法
+
+- 对象语法的含义是:class后面跟的是一个对象。
+
+对象语法有下面这些用法：
+
+```html
+<!--用法一：直接通过{}绑定一个类-->
+<h2 :class="{'active': isActive}">Hello World</h2>
+
+<!--用法二：也可以通过判断，传入多个值-->
+<h2 :class="{'active': isActive, 'line': isLine}">Hello World</h2>
+
+<!--用法三：和普通的类同时存在，并不冲突
+注：如果isActive和isLine都为true，那么会有title/active/line三个类-->
+<h2 class="title" :class="{'active': isActive, 'line': isLine}">Hello World</h2>
+
+<!--用法四：如果过于复杂，可以放在一个methods或者computed中 注：classes是一个计算属性-->
+<h2 class="title" :class="classes">Hello World</h2>
+```
+
+演示案例：
+
+```html
+<head>
+    <style>
+        .active{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h2 :class="{'active': isActive}">{{message}}</h2>
+    <h2 :class="getClasses()">{{message}}</h2>
+    <button v-on:click="btnClick">按钮</button>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            message:'Hello World',
+            isActive:true,
+            isLine:true
+        },
+        methods:{
+            btnClick:function () {
+                this.isActive=!this.isActive;
+            },
+            getClasses:function () {
+                return {active:this.isActive,line:this.isLine}
+            }
+        }
+    })
+</script>
+```
+
+绑定方式：数组语法
+
+- 数组语法的含义是:class后面跟的是一个数组。
+
+数组语法有下面这些用法：
+
+```html
+<!--用法一：直接通过{}绑定一个类-->
+<h2 :class="['active']">Hello World</h2>
+
+<!--用法二：也可以传入多个值-->
+<h2 :class=“[‘active’, 'line']">Hello World</h2>
+
+<!--用法三：和普通的类同时存在，并不冲突  注：会有title/active/line三个类-->
+<h2 class="title" :class=“[‘active’, 'line']">Hello World</h2>
+
+<!--用法四：如果过于复杂，可以放在一个methods或者computed中  注：classes是一个计算属性-->
+<h2 class="title" :class="classes">Hello World</h2>
+```
+
+演示案例:
+
+```html
+<body>
+<div id="app">
+    <h2 :class="[active , line]">{{message}}</h2>
+    <h2 :class="getClasses()">{{message}}</h2>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            message:'Hello World',
+            active:'aaaaa',
+            line:'bbbbb'
+        },
+        methods:{
+            getClasses:function () {
+                return [this.active , this.line]
+            }
+        }
+    })
+</script>
+```
+
+##### 2.2.3、v-bind绑定style
+
+我们可以利用v-bind:style来绑定一些CSS内联样式。
+
+在写CSS属性名的时候，比如font-size
+
+- 我们可以使用驼峰式 (camelCase) fontSize 
+
+- 或短横线分隔 (kebab-case，记得用单引号括起来) ‘font-size’
+
+绑定class有两种方式：
+
+- 对象语法
+
+  ```html
+  :style="{color: currentColor, fontSize: fontSize + 'px'}"
+  ```
+
+  style后面跟的是一个对象类型
+  对象的key是CSS属性名称
+  对象的value是具体赋的值，值可以来自于data中的属性
+
+- 数组语法
+
+  ```html
+  <div v-bind:style="[baseStyles, overridingStyles]"></div>
+  ```
+
+  style后面跟的是一个数组类型
+  多个值以，分割即可
+
+
+
+
+
+
+
+#### 2.3、计算属性
+
+#### 2.5、事件监听
+
+#### 2.5、条件和循环
+
+#### 2.6、阶段案例
+
+#### 2.7、表单绑定
+
+### 三、组件开发
+
+### 四、Vue CLI详解
