@@ -47,16 +47,25 @@ git commit --amend         // 修改提交注释
 git rebase -i 版本号        // 合并未 push 的commit 为一次 
 ```
 ## 4、查看仓库当前状态
-```
+```java
 git status
+
+// 忽略文件的改动，但是不加入.gitignore 文件中
+// 这样可以达到仅在本地目录中忽略，不影响其他团队成员的工作
+git update-index --assume-unchanged 文件名
+
+// 上一个命令的逆操作，重新追踪文件改动。
+git update-index --no-assume-unchanged 文件名
 ```
 ## 5、比较文件异同
 ```java
 git diff               // 工作区与暂存区的差异
+git diff --cached      // 工作区与暂存区的差异（更详细）
+    
 git diff 分支名         // 工作区与某分支的差异，远程分支这样写：remotes/origin/分支名
 git diff HEAD          // 工作区与HEAD指针指向的内容差异
 git diff 提交id   	 // 文件路径 # 工作区某文件当前版本与历史版本的差异
-git diff --stage       // 工作区文件与上次提交的差异
+
 git diff 版本TAG       // 查看从某个版本后都改动内容
 git diff 分支A 分支B   // 比较从分支A和分支B的差异(也支持比较两个TAG)
 git diff 分支A...分支  // 比较两分支在分开后各自的改动
@@ -96,12 +105,7 @@ git checkout -- filepathname
 // 撤消commit 但是还没有push 的内容：
 git reset --soft HEAD^
 
-// 忽略文件的改动，但是不加入.gitignore 文件中
-// 这样可以达到仅在本地目录中忽略，不影响其他团队成员的工作
-git update-index --assume-unchanged 文件名
 
-// 上一个命令的逆操作，重新追踪文件改动。
-git update-index --no-assume-unchanged 文件名
 ```
 ## 8、同步远程仓库
 ```
@@ -155,9 +159,6 @@ git checkout master  // 切换到主分支
 git push origin dev  // 将新分支推送至GitHub.
 
 git merge dev        // 用于合并指定分支到当前分支
-
-git merge --no-ff -m "merge with no-ff" dev  // 加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并
-
 git branch -d dev    //删除分支
 
 git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
