@@ -3,22 +3,22 @@
 git init
 ```
 第一次使用要设置用户和邮箱：
-```
+```java
 git config --global user.name "gugibv"
 git config --global user.email gugibv@163.com
 
 git config --global user.name "zhoujing"
 git config --global user.email zhoujing@sunline.cn
 
-git config --global user.name   // 查看用户名是否配置成功
-git config --global user.email   // 查看邮箱是否配置
+git config --global user.name        // 查看用户名是否配置成功
+git config --global user.email       // 查看邮箱是否配置
 
 # 其他查看配置相关
-git config --global --list  # 查看全局设置相关参数列表
-git config --local --list # 查看本地设置相关参数列表
-git config --system --list # 查看系统配置参数列表
-git config --list  # 查看所有Git的配置(全局+本地+系统)
-git config --global color.ui true //显示git相关颜色
+git config --global --list           // 查看全局设置相关参数列表
+git config --local --list            // 查看本地设置相关参数列表
+git config --system --list           // 查看系统配置参数列表
+git config --list                    // 查看所有Git的配置(全局+本地+系统)
+git config --global color.ui true    // 显示git相关颜色
 ```
 创建ssh:
 ```
@@ -30,37 +30,39 @@ $ ssh-keygen -t rsa -C "gugibv@163.com"
 
 <div align="center"> <img src="pics/image-20201226221414270.png" width="300"/> </div>
 
-```
-git add 文件名 # 将工作区的某个文件添加到暂存区   
-git add -u # 添加所有被tracked文件中被修改或删除的文件信息到暂存区，不处理untracked的文件
-git add -A # 添加所有被tracked文件中被修改或删除的文件信息到暂存区，包括untracked的文件
-git add . # 将当前工作区的所有文件都加入暂存区
-git add -i # 进入交互界面模式，按需添加文件到缓存区
+```java
+git add 文件名 // 将工作区的某个文件添加到暂存区   
+git add -u    // 添加所有被tracked文件中被修改或删除的文件信息到暂存区，不处理untracked的文件
+git add -A    // 添加所有被tracked文件中被修改或删除的文件信息到暂存区，包括untracked的文件
+git add .     // 将当前工作区的所有文件都加入暂存区
+git add -i    // 进入交互界面模式，按需添加文件到缓存区
 ```
 ## 3、将暂存区文件提交到本地仓库
 
-```
-git commit -m "提交说明" # 将暂存区内容提交到本地仓库
-git commit -a -m "提交说明" # 跳过缓存区操作，直接把工作区内容提交到本地仓库
+```java
+git commit -m "提交说明"    // 将暂存区内容提交到本地仓库
+git commit -a -m "提交说明" // 跳过缓存区操作，直接把工作区内容提交到本地仓库
+
+git commit --amend         // 修改提交注释
 ```
 ## 4、查看仓库当前状态
 ```
 git status
 ```
 ## 5、比较文件异同
-```
-git diff # 工作区与暂存区的差异
-git diff 分支名 #工作区与某分支的差异，远程分支这样写：remotes/origin/分支名
-git diff HEAD  # 工作区与HEAD指针指向的内容差异
-git diff 提交id 文件路径 # 工作区某文件当前版本与历史版本的差异
-git diff --stage # 工作区文件与上次提交的差异(1.6 版本前用 --cached)
-git diff 版本TAG # 查看从某个版本后都改动内容
-git diff 分支A 分支B # 比较从分支A和分支B的差异(也支持比较两个TAG)
-git diff 分支A...分支B # 比较两分支在分开后各自的改动
+```java
+git diff               // 工作区与暂存区的差异
+git diff 分支名         // 工作区与某分支的差异，远程分支这样写：remotes/origin/分支名
+git diff HEAD          // 工作区与HEAD指针指向的内容差异
+git diff 提交id   	 // 文件路径 # 工作区某文件当前版本与历史版本的差异
+git diff --stage       // 工作区文件与上次提交的差异
+git diff 版本TAG       // 查看从某个版本后都改动内容
+git diff 分支A 分支B   // 比较从分支A和分支B的差异(也支持比较两个TAG)
+git diff 分支A...分支  // 比较两分支在分开后各自的改动
 
 # 另外：如果只想统计哪些文件被改动，多少行被改动，可以添加 --stat 参数
 ```
-## 6、查看历史记录
+## 6、查看历史记录java
 ```java
 git log                 // 查看所有commit记录(SHA-A校验和，作者名称，邮箱，提交时间，提交说明)
 git log --oneline       // 让提交记录以精简的一行输出
@@ -72,33 +74,32 @@ gitk 打开图形化界面
 ```
 ## 7、代码回滚
 ```java
-git reset HEAD^ # 恢复成上次提交的版本
-git reset HEAD^^ # 恢复成上上次提交的版本，就是多个^，以此类推或用~次数
+git reset HEAD^   // 恢复成上次提交的版本
+git reset HEAD^^  // 恢复成上上次提交的版本，就是多个^，以此类推或用~次数
 
---上面的操作可以通过查看版本号，通过git reset --hard 版本号 来恢复   
-git reflog
+git reflog              // 查看版本号
+git reset --hard 版本号  // 通过查看版本号来恢复   
 
-git reset --hard 版本号
+// soft：只是改变HEAD指针指向，缓存区和工作区不变；
+// mixed：修改HEAD指针指向，暂存区内容丢失，工作区不变；
+// hard：修改HEAD指针指向，暂存区内容丢失，工作区恢复以前状态；
 
---soft：只是改变HEAD指针指向，缓存区和工作区不变；
---mixed：修改HEAD指针指向，暂存区内容丢失，工作区不变；
---hard：修改HEAD指针指向，暂存区内容丢失，工作区恢复以前状态；
+// 撤消add 的内容
+git status                      // 先看一下add 中的文件 
+git reset HEAD                  // 如果后面什么都不跟的话 就是上一次add 里面的全部撤销了 
+git reset HEAD XXX/XXX/XXX.java // 就是对某个文件进行撤销了
 
---撤消add 的内容
-git status 先看一下add 中的文件 
-git reset HEAD 如果后面什么都不跟的话 就是上一次add 里面的全部撤销了 
-git reset HEAD XXX/XXX/XXX.java 就是对某个文件进行撤销了
-
---撤消本地还没有commit 的修改
+// 撤消本地还没有commit 的修改
 git checkout -- filepathname
 
---撤消commit 但是还没有push 的内容：
+// 撤消commit 但是还没有push 的内容：
 git reset --soft HEAD^
 
---忽略文件的改动，但是不加入.gitignore 文件中，这样可以达到仅在本地目录中忽略，不影响其他团队成员的工作
+// 忽略文件的改动，但是不加入.gitignore 文件中
+// 这样可以达到仅在本地目录中忽略，不影响其他团队成员的工作
 git update-index --assume-unchanged 文件名
 
---上一个命令的逆操作，重新追踪文件改动。
+// 上一个命令的逆操作，重新追踪文件改动。
 git update-index --no-assume-unchanged 文件名
 ```
 ## 8、同步远程仓库
@@ -158,7 +159,7 @@ git merge --no-ff -m "merge with no-ff" dev  // 加上--no-ff参数就可以用�
 
 git branch -d dev    //删除分支
 
-git log --graph --pretty=oneline --abbrev-commit //查看分支合并图
+git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
 ```
 
 
