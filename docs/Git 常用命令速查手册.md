@@ -26,8 +26,10 @@ $ ssh-keygen -t rsa -C "gugibv@163.com"
 ```
 将路径下的id_rsa.pub添加到github网站上
 
-
 ## 2、将文件添加到仓库
+
+<div align="center"> <img src="pics/image-20201226221414270.png" width="300"/> </div>
+
 ```
 git add 文件名 # 将工作区的某个文件添加到暂存区   
 git add -u # 添加所有被tracked文件中被修改或删除的文件信息到暂存区，不处理untracked的文件
@@ -36,6 +38,7 @@ git add . # 将当前工作区的所有文件都加入暂存区
 git add -i # 进入交互界面模式，按需添加文件到缓存区
 ```
 ## 3、将暂存区文件提交到本地仓库
+
 ```
 git commit -m "提交说明" # 将暂存区内容提交到本地仓库
 git commit -a -m "提交说明" # 跳过缓存区操作，直接把工作区内容提交到本地仓库
@@ -58,18 +61,14 @@ git diff 分支A...分支B # 比较两分支在分开后各自的改动
 # 另外：如果只想统计哪些文件被改动，多少行被改动，可以添加 --stat 参数
 ```
 ## 6、查看历史记录
-```
-git log # 查看所有commit记录(SHA-A校验和，作者名称，邮箱，提交时间，提交说明)
-git log -p -次数 # 查看最近多少次的提交记录
-git log --stat # 简略显示每次提交的内容更改
-git log --name-only # 仅显示已修改的文件清单
-git log --name-status # 显示新增，修改，删除的文件清单
-git log --oneline # 让提交记录以精简的一行输出
-git log –graph –all --online # 图形展示分支的合并历史
-git log --author=作者  # 查询作者的提交记录(和grep同时使用要加一个--all--match参数)
-git log --grep=过滤信息 # 列出提交信息中包含过滤信息的提交记录
-git log -S查询内容 # 和--grep类似，S和查询内容间没有空格
-git log fileName # 查看某文件的修改记录，找背锅专用
+```java
+git log                 // 查看所有commit记录(SHA-A校验和，作者名称，邮箱，提交时间，提交说明)
+git log --oneline       // 让提交记录以精简的一行输出
+git log -n4 --oneline   // 查看最近4次提交
+git log --all --graph   // 查看所有分支历史
+git log fileName        // 查看某文件的修改记录，找背锅专用
+    
+gitk 打开图形化界面
 ```
 ## 7、代码回滚
 ```java
@@ -141,24 +140,23 @@ git clone git@github.com:git帐号名/仓库名.git
 git clone -b mvp3.0_dev  git@github.com:git帐号名/仓库名.git #指定分支下载
 ```
 ## 13、分支管理
-```
-git branch      //查看本地分支
-git branch -a   //查看所有分支包括本地分支和远程分支
-git branch -r //(查看远程分支
+```java
+git branch           // 查看本地分支
+git branch -a        // 查看所有分支包括本地分支和远程分支
+git branch -r        // 查看远程分支
 
-git checkout -b dev  
-//-b表示创建并切换分支，上面一条命令相当于一面的二条：
-git branch dev //创建分支
-git checkout dev //切换分支
-git checkout master //切换到主分支
+git checkout -b dev  // -b表示创建并切换分支，上面一条命令相当于一面的二条：
+git branch dev       // 创建分支
+git checkout dev     // 切换分支
+git checkout master  // 切换到主分支
 
-git push origin dev // 将新分支推送至GitHub.
+git push origin dev  // 将新分支推送至GitHub.
 
-git merge dev  //用于合并指定分支到当前分支
+git merge dev        // 用于合并指定分支到当前分支
 
-git merge --no-ff -m "merge with no-ff" dev//加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并
+git merge --no-ff -m "merge with no-ff" dev  // 加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并
 
-git branch -d dev //删除分支
+git branch -d dev    //删除分支
 
 git log --graph --pretty=oneline --abbrev-commit //查看分支合并图
 ```
@@ -207,5 +205,13 @@ awesome linux
 
 ```
 git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
+```
+
+## 19、其他命令
+
+```
+git mv readme readme.md   // 文件重命令
+
+
 ```
 
