@@ -116,14 +116,15 @@ git reset --hard 版本号   // 通过查看版本号来恢复
 ```
 ## 9、同步远程仓库
 ```java
-git fetch origin master                                      // 将远程库更新拉取到本地
+git fetch origin master                            // 将远程库更新拉取到本地
 // 从远程获取最新的到本地，首先从远程的origin的master主分支下载最新的版本到origin/master分支上，
 // 然后比较本地的master分支和origin/master分支的差别，最后进行合并。
 // git fetch比git pull更加安全    
     
-git push -u origin master                                    // 将本地推到远程库
- 
-git branch -av                                               // 查看推送同步记录  
+git push -u origin master                           // 将本地推到远程库  
+													// 禁止向集成分支使用push -f 
+													// 禁止向集成分支执行变更历史的操作    
+git branch -av                                      // 查看推送同步记录  
 ```
 ## 10、删除文件
 ```java
@@ -142,6 +143,8 @@ git branch dev       // 创建分支
 git checkout dev     // 切换分支（切换到主分支：git checkout master）
     
 git merge dev        // 用于合并指定分支到当前分支
+git merge -h         // 查看合并帮助信息
+
 git branch -d dev    // 删除分支
 
 git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
@@ -170,22 +173,7 @@ git show 标签               // 显示某个标签的详细信息
 ```
 
 
-## 14、github搜索技巧
-
-1、awesome + xx  比方说：
-
-```java
-awesome python
-awesome go
-awesome linux
-```
-2、功能 + 网站
-
-比方说当你想采集某个网站的时候，你可以在Github里面搜「网站名称+Scrapy」，如果搜不到可以搜「网站名称+采集」，还可以搜「网站名称+Python」等等。
-
-3、接口
-
-## 15、统计代码提交量
+## 14、统计代码提交量
 
 ```
 git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
