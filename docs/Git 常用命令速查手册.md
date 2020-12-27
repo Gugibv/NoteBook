@@ -84,39 +84,36 @@ gitk 打开图形化界面
 ```
 ## 7、代码回滚
 ```java
-git reset HEAD^   // 将暂存区恢复成上次提交的版本（操作暂存区）
-git reset HEAD^^  // 将暂存区恢复成上上次提交的版本，就是多个^，以此类推或用~次数
-
-git reflog               // 查看版本号
-git reset --hard 版本号  // 通过查看版本号来恢复   
-
-git reset --soft HEAD^  // 撤消commit 但是还没有push 的内容
-// soft：只是改变HEAD指针指向，缓存区和工作区不变；
-// mixed：修改HEAD指针指向，暂存区内容丢失，工作区不变；
-// hard：修改HEAD指针指向，暂存区内容丢失，工作区恢复以前状态；
+git checkout -- filepathname   // 撤消本地还没有commit 的修改（操作工作区）
 
 // 撤消add 的内容
 git status                      // 先看一下add 中的文件 
 git reset HEAD                  // 如果后面什么都不跟的话 就是上一次add 里面的全部撤销了 
-git reset HEAD XXX/XXX/XXX.java // 就是对某个文件进行撤销了
-   
-git checkout -- filepathname   // 撤消本地还没有commit 的修改（操作工作区）
+git reset HEAD XXX/XXX/XXX.java // 就是对某个文件进行撤销了    
+    
+git reset HEAD^   // 将暂存区恢复成上次提交的版本（操作暂存区）
+git reset HEAD^^  // 将暂存区恢复成上上次提交的版本，就是多个^，以此类推或用~次数
+  
+git reset --soft HEAD^  // 撤消commit 但是还没有push 的内容，缓存区和工作区不变
+// soft：只是改变HEAD指针指向，缓存区和工作区不变；
+// mixed：修改HEAD指针指向，暂存区内容丢失，工作区不变；
+// hard： 修改HEAD指针指向，暂存区内容丢失，工作区恢复以前状态；
+// 例如：git reset --hard HEAD 暂存区内容丢失，工作区恢复以前状态  
+    
+git reflog               // 查看版本号
+git reset --hard 版本号   // 通过查看版本号来恢复       
 ```
 ## 8、同步远程仓库
 ```
 git push -u origin master
 ```
-## 9、删除版本库文件
-```
-git rm 文件名
+## 9、删除文件
+```java
+git rm 文件名              // 删除文件
 
-git mv readme readme.md   // 文件重命令
+git mv readme readme.md   // 重命令文件
 ```
-## 10、版本库里的版本替换工作区的版本
-```
-git checkout -- test.txt
-```
-## 11、本地仓库内容推送到远程仓库
+## 10、本地仓库内容推送到远程仓库
 ```java
 git remote add origin git@github.com:帐号名/仓库名.git
 ```
@@ -135,14 +132,14 @@ git remote add origin [url]
 git remote -v
 ```
 
-## 12、从远程仓库克隆项目到本地
+## 11、从远程仓库克隆项目到本地
 ```
 git clone git@github.com:git帐号名/仓库名.git
 
 
 git clone -b mvp3.0_dev  git@github.com:git帐号名/仓库名.git #指定分支下载
 ```
-## 13、分支管理
+## 12、分支管理
 ```java
 git branch           // 查看本地分支
 git branch -a        // 查看所有分支包括本地分支和远程分支
@@ -161,8 +158,22 @@ git branch -d dev    //删除分支
 git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
 ```
 
+## 13、工作进度保存和恢复
+
+```java
+git stash                   // 保存当前工作进度，将工作区和暂存区恢复到修改之前
+git stash save message      // 作用同上，message为此次进度保存的说明
+git stash list              // 显示保存的工作进度列表，编号越小代表保存进度的时间越近
+git stash apply stash@{num} // 恢复，num是可选项（与 pop 区别是可恢复多次）
+git stash pop stash@{num}   // 恢复工作进度到工作区，此命令的stash@{num}是可选项    
+git stash drop stash@{num}  // 删除一条保存的工作进度，此命令的stash@{num}是可选项
+git stash clear             // 删除所有保存的工作进度
+```
+
+
 
 ## 14、拉取远程分支到本地仓库
+
 ```java
 git checkout -b 本地分支 远程分支           // 会在本地新建分支，并自动切换到该分支
 git fetch origin 远程分支:本地分支          // 会在本地新建分支，但不会自动切换，还需checkout
@@ -190,6 +201,7 @@ git fetch比git pull更加安全
 ## 17、github搜索技巧
 
 1、awesome + xx  比方说：
+
 ```
 awesome python
 awesome go
