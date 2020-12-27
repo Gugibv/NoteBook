@@ -15,19 +15,11 @@
 
 ### 三、web开发
 
-#### 
+
 
 ### 四、运维
 
 #### [linux运维常用知识整理](https://github.com/Gugibv/NoteBooks/blob/master/docs/linux运维常用知识整理.md)
-
-
-
-### 五、产品管理
-
-
-
-
 
 ### 后记
 

@@ -104,8 +104,22 @@ git reflog               // 查看版本号
 git reset --hard 版本号   // 通过查看版本号来恢复       
 ```
 ## 8、同步远程仓库
-```
-git push -u origin master
+```java
+git remote add origin git@github.com:帐号名/仓库名.git
+git remote set-url origin [url]                              // 修改远程库
+git remote -v                                                // 查看远程库地址
+
+git clone git@github.com:git帐号名/仓库名.git                 // 将远程库拉克隆到本地
+git clone -b mvp3.0_dev  git@github.com:git帐号名/仓库名.git  // 指定分支克隆
+    
+git fetch origin master                                      // 将远程库更新拉取到本地
+// 从远程获取最新的到本地，首先从远程的origin的master主分支下载最新的版本到origin/master分支上，
+// 然后比较本地的master分支和origin/master分支的差别，最后进行合并。
+// git fetch比git pull更加安全    
+    
+git push -u origin master                                    // 将本地推到远程库
+ 
+git branch -av                                               // 查看推送同步记录  
 ```
 ## 9、删除文件
 ```java
@@ -113,52 +127,23 @@ git rm 文件名              // 删除文件
 
 git mv readme readme.md   // 重命令文件
 ```
-## 10、本地仓库内容推送到远程仓库
-```java
-git remote add origin git@github.com:帐号名/仓库名.git
-```
-
-修改远程库命令：
-```
-git remote set-url origin [url]
-```
-或者先删后加
-```
-git remote rm origin
-git remote add origin [url]
-```
-查看远程库地址：
-```
-git remote -v
-```
-
-## 11、从远程仓库克隆项目到本地
-```
-git clone git@github.com:git帐号名/仓库名.git
-
-
-git clone -b mvp3.0_dev  git@github.com:git帐号名/仓库名.git #指定分支下载
-```
-## 12、分支管理
+## 10、分支管理
 ```java
 git branch           // 查看本地分支
 git branch -a        // 查看所有分支包括本地分支和远程分支
 git branch -r        // 查看远程分支
 
-git checkout -b dev  // -b表示创建并切换分支，上面一条命令相当于一面的二条：
+git checkout -b dev  // -b表示创建并切换分支，上面一条命令相当于下面的二条：
 git branch dev       // 创建分支
-git checkout dev     // 切换分支
-git checkout master  // 切换到主分支
-
-git push origin dev  // 将新分支推送至GitHub.
-
+git checkout dev     // 切换分支（切换到主分支：git checkout master）
+    
 git merge dev        // 用于合并指定分支到当前分支
-git branch -d dev    //删除分支
+git branch -d dev    // 删除分支
 
 git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
 ```
 
-## 13、工作进度保存和恢复
+## 11、工作进度保存和恢复
 
 ```java
 git stash                   // 保存当前工作进度，将工作区和暂存区恢复到修改之前
@@ -172,37 +157,20 @@ git stash clear             // 删除所有保存的工作进度
 
 
 
-## 14、拉取远程分支到本地仓库
-
-```java
-git checkout -b 本地分支 远程分支           // 会在本地新建分支，并自动切换到该分支
-git fetch origin 远程分支:本地分支          // 会在本地新建分支，但不会自动切换，还需checkout
-git branch --set-upstream 本地分支 远程分支 // 建立本地分支与远程分支的链接
-```
-## 15、标签命令
+## 12、标签命令
 ```java
 git tag 标签                 // 打标签命令，默认为HEAD
 git tag                     // 显示所有标签
 git tag 标签 版本号          // 给某个commit版本添加标签
 git show 标签               // 显示某个标签的详细信息
 ```
-## 16、同步远程仓库更新
-```java
- // 从远程获取最新的到本地，首先从远程的origin的master主分支下载最新的版本到origin/master分支上，
- // 然后比较本地的master分支和origin/master分支的差别，最后进行合并。
-git fetch origin master
-    
-git fetch比git pull更加安全
-```
-
----
 
 
-## 17、github搜索技巧
+## 13、github搜索技巧
 
 1、awesome + xx  比方说：
 
-```
+```java
 awesome python
 awesome go
 awesome linux
@@ -213,7 +181,7 @@ awesome linux
 
 3、接口
 
-## 18、统计代码提交量
+## 14、统计代码提交量
 
 ```
 git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
