@@ -84,8 +84,8 @@ gitk 打开图形化界面
 ```
 ## 7、代码回滚
 ```java
-git reset HEAD^   // 恢复成上次提交的版本
-git reset HEAD^^  // 恢复成上上次提交的版本，就是多个^，以此类推或用~次数
+git reset HEAD^   // 将暂存区恢复成上次提交的版本
+git reset HEAD^^  // 将暂存区恢复成上上次提交的版本，就是多个^，以此类推或用~次数
 
 git reflog              // 查看版本号
 git reset --hard 版本号  // 通过查看版本号来恢复   
