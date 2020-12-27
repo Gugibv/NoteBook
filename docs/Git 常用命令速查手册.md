@@ -44,9 +44,9 @@ git commit -m "提交说明"    // 将暂存区内容提交到本地仓库
 git commit -a -m "提交说明" // 跳过缓存区操作，直接把工作区内容提交到本地仓库
 
 git commit --amend         // 修改提交注释
-git rebase -i 版本号        // 合并未 push 的commit 为一次 
+git rebase -i 版本号        // 可以合并多个未 push 的commit为一次（将要合并的commit修改为s）
 ```
-## 4、查看仓库当前状态
+## 4、查看仓库状态
 ```java
 git status
 
