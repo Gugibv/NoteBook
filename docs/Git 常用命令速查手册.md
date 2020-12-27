@@ -44,6 +44,7 @@ git commit -m "提交说明"    // 将暂存区内容提交到本地仓库
 git commit -a -m "提交说明" // 跳过缓存区操作，直接把工作区内容提交到本地仓库
 
 git commit --amend         // 修改提交注释
+git rebase -i 版本号
 ```
 ## 4、查看仓库当前状态
 ```
@@ -115,7 +116,7 @@ git rm 文件名
 git checkout -- test.txt
 ```
 ## 11、本地仓库内容推送到远程仓库
-```
+```java
 git remote add origin git@github.com:帐号名/仓库名.git
 ```
 
@@ -164,24 +165,24 @@ git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
 
 
 ## 14、拉取远程分支到本地仓库
-```
-git checkout -b 本地分支 远程分支 //会在本地新建分支，并自动切换到该分支
-git fetch origin 远程分支:本地分支 //会在本地新建分支，但不会自动切换，还需checkout
+```java
+git checkout -b 本地分支 远程分支           // 会在本地新建分支，并自动切换到该分支
+git fetch origin 远程分支:本地分支          // 会在本地新建分支，但不会自动切换，还需checkout
 git branch --set-upstream 本地分支 远程分支 // 建立本地分支与远程分支的链接
 ```
 ## 15、标签命令
-```
-git tag 标签 //打标签命令，默认为HEAD
-git tag //显示所有标签
-git tag 标签 �版本号 //给某个commit版本添加标签
-git show 标签 //显示某个标签的详细信息
+```java
+git tag 标签                 // 打标签命令，默认为HEAD
+git tag                     // 显示所有标签
+git tag 标签 版本号          // 给某个commit版本添加标签
+git show 标签               // 显示某个标签的详细信息
 ```
 ## 16、同步远程仓库更新
-```
-git fetch  origin master
- //从远程获取最新的到本地，首先从远程的origin的master主分支下载最新的版本到origin/master分支上，
- //然后比较本地的master分支和origin/master分支的差别，最后进行合并。
-
+```java
+ // 从远程获取最新的到本地，首先从远程的origin的master主分支下载最新的版本到origin/master分支上，
+ // 然后比较本地的master分支和origin/master分支的差别，最后进行合并。
+git fetch origin master
+    
 git fetch比git pull更加安全
 ```
 
@@ -210,9 +211,7 @@ git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs
 
 ## 19、其他命令
 
-```
+```java
 git mv readme readme.md   // 文件重命令
-
-
 ```
 
