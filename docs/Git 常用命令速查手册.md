@@ -84,12 +84,13 @@ gitk 打开图形化界面
 ```
 ## 7、代码回滚
 ```java
-git reset HEAD^   // 将暂存区恢复成上次提交的版本
+git reset HEAD^   // 将暂存区恢复成上次提交的版本（操作暂存区）
 git reset HEAD^^  // 将暂存区恢复成上上次提交的版本，就是多个^，以此类推或用~次数
 
-git reflog              // 查看版本号
+git reflog               // 查看版本号
 git reset --hard 版本号  // 通过查看版本号来恢复   
 
+git reset --soft HEAD^  // 撤消commit 但是还没有push 的内容
 // soft：只是改变HEAD指针指向，缓存区和工作区不变；
 // mixed：修改HEAD指针指向，暂存区内容丢失，工作区不变；
 // hard：修改HEAD指针指向，暂存区内容丢失，工作区恢复以前状态；
@@ -98,14 +99,8 @@ git reset --hard 版本号  // 通过查看版本号来恢复
 git status                      // 先看一下add 中的文件 
 git reset HEAD                  // 如果后面什么都不跟的话 就是上一次add 里面的全部撤销了 
 git reset HEAD XXX/XXX/XXX.java // 就是对某个文件进行撤销了
-
-// 撤消本地还没有commit 的修改
-git checkout -- filepathname
-
-// 撤消commit 但是还没有push 的内容：
-git reset --soft HEAD^
-
-
+   
+git checkout -- filepathname   // 撤消本地还没有commit 的修改（操作工作区）
 ```
 ## 8、同步远程仓库
 ```
@@ -114,6 +109,8 @@ git push -u origin master
 ## 9、删除版本库文件
 ```
 git rm 文件名
+
+git mv readme readme.md   // 文件重命令
 ```
 ## 10、版本库里的版本替换工作区的版本
 ```
@@ -210,9 +207,7 @@ awesome linux
 git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
 ```
 
-## 19、其他命令
 
-```java
-git mv readme readme.md   // 文件重命令
-```
+
+
 
