@@ -179,7 +179,12 @@ git show 标签               // 显示某个标签的详细信息
 git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -
 ```
 
+## 15、github 搜索技巧
 
-
-
+```java
+关键词 in：readme                        // readme文件中包含搜索的关键词
+关键词 stars>1000                        // star 数目大于1000
+"xxx" filename:xxx.java                 // 根据文件名包含关键词搜索
+blog easily start in:readme stars>1000  // 搜索博客搭建
+```
 
