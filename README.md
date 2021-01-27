@@ -39,4 +39,3 @@
 <div align="center"> <img src="" width="800"/> </div>
 ```
 
-Test

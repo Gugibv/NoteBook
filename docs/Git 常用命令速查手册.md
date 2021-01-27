@@ -39,7 +39,7 @@ git clone -b mvp3.0_dev  git@github.com:git帐号名/仓库名.git  // 指定分
 
 ## 3、将文件添加到仓库
 
-<div align="center"> <img src="pics/image-20201226221414270.png" width="300"/> </div>
+<div align="center"> <img src="pics/工作区与暂存区.png" width="300"/> </div>
 
 ```java
 git add 文件名 // 将工作区的某个文件添加到暂存区   
@@ -64,6 +64,9 @@ git status
 // 忽略文件的改动，但是不加入.gitignore 文件中
 // 这样可以达到仅在本地目录中忽略，不影响其他团队成员的工作
 git update-index --assume-unchanged 文件名
+
+//查看忽略列表
+git ls-files -v | grep '^h\ '
 
 // 上一个命令的逆操作，重新追踪文件改动。
 git update-index --no-assume-unchanged 文件名
