@@ -148,7 +148,8 @@ git checkout dev     // 切换分支（切换到主分支：git checkout master�
 git merge dev        // 用于合并指定分支到当前分支
 git merge -h         // 查看合并帮助信息
 
-git branch -d dev    // 删除分支
+git branch -d dev    // 删除本地分支
+git push origin --delete dev // 删除远程分支   
 
 git log --graph --pretty=oneline --abbrev-commit  // 查看分支合并图
 ```
