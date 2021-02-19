@@ -192,3 +192,40 @@ git log --author="zhoujing" --pretty=tformat: --numstat | awk '{ add += $1; subs
 blog easily start in:readme stars>1000  // 搜索博客搭建
 ```
 
+## 16、git cherry-pick
+
+举例来说，代码仓库有`master`和`feature`两个分支。
+
+```mysql
+a - b - c - d   Master
+         \
+           e - f - g Feature
+```
+
+现在将提交`f`应用到`master`分支。
+
+```mysql
+# 切换到 master 分支
+$ git checkout master
+
+# Cherry pick 操作
+$ git cherry-pick f
+```
+
+上面的操作完成以后，代码库就变成了下面的样子。
+
+```
+ a - b - c - d - f   Master
+         \
+           e - f - g Feature
+```
+
+从上面可以看到，`master`分支的末尾增加了一个提交`f`。
+
+`git cherry-pick`命令的参数，不一定是提交的哈希值，分支名也是可以的，表示转移该分支的最新提交。
+
+```mysql
+$ git cherry-pick feature
+```
+
+上面代码表示将`feature`分支的最近一次提交，转移到当前分支。
