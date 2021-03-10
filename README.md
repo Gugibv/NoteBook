@@ -15,14 +15,17 @@
 
 ### 三、web开发
 
-#### 
+
 
 ### 四、运维
 
 #### [linux运维常用知识整理](https://github.com/Gugibv/NoteBooks/blob/master/docs/linux运维常用知识整理.md)
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> fcf4bc261ce30a91e013ca23e9a2ac2f02ea71e4
 ### 后记
 
 #### 关于
@@ -41,5 +44,8 @@
 <div align="center"> <img src="" width="800"/> </div>
 ```
 
+<<<<<<< HEAD
 测试
 
+=======
+>>>>>>> fcf4bc261ce30a91e013ca23e9a2ac2f02ea71e4
